@@ -26,7 +26,7 @@ public class OfferBuilder {
         switch (offerType) {
             case BundledDiscount:
                 assert products.size() > 1;
-                return new BundledOffer(offerType, products, discountPercentageOrAmount);
+                return new BundledOffer(products, discountPercentageOrAmount);
             case TwoForAmount:
                 return new TwoForAmountOffer(products.get(0), discountPercentageOrAmount);
             case ThreeForTwo:

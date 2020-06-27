@@ -3,7 +3,6 @@ package dojo.supermarket.offer;
 import dojo.supermarket.model.Discount;
 import dojo.supermarket.model.Product;
 import dojo.supermarket.model.ShoppingCart;
-import dojo.supermarket.model.SpecialOfferType;
 import dojo.supermarket.model.SupermarketCatalog;
 
 public abstract class Offer {

@@ -3,6 +3,7 @@ package dojo.supermarket.model;
 import static dojo.supermarket.model.SpecialOfferType.BundledDiscount;
 import static dojo.supermarket.model.SpecialOfferType.FiveForAmount;
 import static dojo.supermarket.model.SpecialOfferType.PercentDiscount;
+import static dojo.supermarket.model.SpecialOfferType.ThreeForTwo;
 import static dojo.supermarket.model.SpecialOfferType.TwoForAmount;
 import static org.junit.Assert.assertEquals;
 
@@ -54,16 +55,16 @@ public class SupermarketTest {
         catalog.addProduct(toothbrush, 0.99);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(TwoForAmount, toothbrush, 0.99)
+        Offer offer = new OfferBuilder(ThreeForTwo, toothbrush, 0.99)
                 .createOffer();
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
-        cart.addItemQuantity(toothbrush, 2);
+        cart.addItemQuantity(toothbrush, 3);
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
-        assertEquals(0.99, receipt.getTotalPrice(), 0.01);
+        assertEquals(1.98, receipt.getTotalPrice(), 0.01);
     }
 
     @Test
