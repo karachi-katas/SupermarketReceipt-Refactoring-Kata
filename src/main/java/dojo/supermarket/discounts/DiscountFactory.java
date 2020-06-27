@@ -6,17 +6,17 @@ import dojo.supermarket.model.SpecialOfferType;
 
 public class DiscountFactory {
     
-    public static Discount getInstance(SpecialOfferType offerType, Product p, double quantity, Offer offer, double unitPrice) {
+    public static Discount getInstance(Offer offer, Product p, double quantity, double unitPrice) {
         DiscountInstance discountInstance = null;
 
-        if (offerType == SpecialOfferType.TwoForAmount && quantity >= 2) {
-            discountInstance = new TwoForAmount(p, quantity, offer, unitPrice);
-        } else if (offerType == SpecialOfferType.ThreeForTwo && quantity > 2) {
+        if (offer.getOfferType() == SpecialOfferType.TwoForAmount && quantity >= 2) {
+            discountInstance = new TwoForAmount(p, quantity, offer.getArgument(), unitPrice);
+        } else if (offer.getOfferType() == SpecialOfferType.ThreeForTwo && quantity > 2) {
             discountInstance = new ThreeForTwo(p, quantity, unitPrice);
-        } else if (offerType == SpecialOfferType.TenPercentDiscount) {
-            discountInstance = new TenPercent(p, quantity, offer, unitPrice);
-        } else if (offerType == SpecialOfferType.FiveForAmount && quantity >= 5) {
-            discountInstance = new FiveForAmount(p, quantity, offer, unitPrice);
+        } else if (offer.getOfferType() == SpecialOfferType.TenPercentDiscount) {
+            discountInstance = new TenPercent(p, quantity, offer.getArgument(), unitPrice);
+        } else if (offer.getOfferType() == SpecialOfferType.FiveForAmount && quantity >= 5) {
+            discountInstance = new FiveForAmount(p, quantity, offer.getArgument(), unitPrice);
         }
 
         return DiscountInstance.toDiscount(discountInstance);

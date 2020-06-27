@@ -37,18 +37,16 @@ public class ShoppingCart {
     }
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
-        for (Product p: productQuantities().keySet()) {
-            double quantity = productQuantities.get(p);
-            if (offers.containsKey(p)) {
-                Offer offer = offers.get(p);
-                double unitPrice = catalog.getUnitPrice(p);
+        productQuantities()
+                .keySet()
+                .stream()
+                .filter(offers::containsKey)
+                .forEach(product -> {
+                    Offer offer = offers.get(product);
+                    double unitPrice = catalog.getUnitPrice(product);
 
-                Discount discount = DiscountFactory.getInstance(offer.offerType, p, quantity, offer, unitPrice);
-
-                if (discount != null)
+                    Discount discount = DiscountFactory.getInstance(offer, product, productQuantities.get(product), unitPrice);
                     receipt.addDiscount(discount);
-            }
-
-        }
+                });
     }
 }
