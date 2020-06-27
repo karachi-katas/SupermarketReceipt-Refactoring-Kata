@@ -131,8 +131,8 @@ public class SupermarketTest {
         catalog.addProduct(toothpaste, 1.79);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(FiveForAmount, toothpaste, 7.49)
-                .createOffer();
+        Offer offer = new OfferBuilder(toothpaste)
+                .create(7.49, 5);
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
