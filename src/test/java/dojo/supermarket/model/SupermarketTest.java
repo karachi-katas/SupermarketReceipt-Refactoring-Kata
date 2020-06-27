@@ -18,7 +18,7 @@ public class SupermarketTest {
         catalog.addProduct(apples, 1.99);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.TenPercentDiscount, toothbrush, 10.0);
+        teller.addSpecialOffer(SpecialOfferType.PercentDiscount, toothbrush, 10.0);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(apples, 2.5);
@@ -79,7 +79,7 @@ public class SupermarketTest {
         catalog.addProduct(rice, 2.49);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.TenPercentDiscount, rice, 10);
+        teller.addSpecialOffer(SpecialOfferType.PercentDiscount, rice, 10);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(rice, 1);
@@ -96,7 +96,7 @@ public class SupermarketTest {
         catalog.addProduct(apple, 1.99);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.TenPercentDiscount, apple, 20);
+        teller.addSpecialOffer(SpecialOfferType.PercentDiscount, apple, 20);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(apple, 1);
