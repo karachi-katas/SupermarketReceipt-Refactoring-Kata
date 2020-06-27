@@ -48,9 +48,9 @@ public class ShoppingCart {
                 } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
                     x = 2;
                     if (quantityAsInt >= 2) {
-                        double total = offer.argument * (quantityAsInt / x) + quantityAsInt % 2 * unitPrice;
+                        double total = offer.discountPercentageOrAmount * (quantityAsInt / x) + quantityAsInt % 2 * unitPrice;
                         double discountN = unitPrice * quantity - total;
-                        discount = new Discount(p, "2 for " + offer.argument, -discountN);
+                        discount = new Discount(p, "2 for " + offer.discountPercentageOrAmount, -discountN);
                     }
 
                 } if (offer.offerType == SpecialOfferType.FiveForAmount) {
@@ -62,11 +62,11 @@ public class ShoppingCart {
                     discount = new Discount(p, "3 for 2", -discountAmount);
                 }
                 if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
-                    discount = new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
+                    discount = new Discount(p, offer.discountPercentageOrAmount + "% off", -quantity * unitPrice * offer.discountPercentageOrAmount / 100.0);
                 }
                 if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
-                    discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
+                    double discountTotal = unitPrice * quantity - (offer.discountPercentageOrAmount * numberOfXs + quantityAsInt % 5 * unitPrice);
+                    discount = new Discount(p, x + " for " + offer.discountPercentageOrAmount, -discountTotal);
                 }
                 if (discount != null)
                     receipt.addDiscount(discount);
