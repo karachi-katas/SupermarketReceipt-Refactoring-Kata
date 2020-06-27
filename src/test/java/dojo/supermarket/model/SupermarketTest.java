@@ -106,8 +106,6 @@ public class SupermarketTest {
         assertEquals(1.99 * 0.8, receipt.getTotalPrice(), 0.01);
     }
 
-
-
     @Test
     public void fiveForAmountForToothpaste() {
         SupermarketCatalog catalog = new FakeCatalog();
@@ -123,5 +121,22 @@ public class SupermarketTest {
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
         assertEquals(7.49, receipt.getTotalPrice(), 0.01);
+    }
+
+    @Test
+    public void twoBoxesOfCherryTomatoesForDiscountedPrice() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product cherryTomatoes = new Product("cherryTomatoes", ProductUnit.Each);
+        catalog.addProduct(cherryTomatoes, 0.69);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, cherryTomatoes, 0.99);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(cherryTomatoes, 2);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        assertEquals(0.99, receipt.getTotalPrice(), 0.01);
     }
 }
