@@ -150,8 +150,8 @@ public class SupermarketTest {
         catalog.addProduct(cherryTomatoes, 0.69);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(TwoForAmount, cherryTomatoes, 0.99)
-                .createOffer();
+        Offer offer = new OfferBuilder(cherryTomatoes)
+                .create(0.99, 2);
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
@@ -171,8 +171,8 @@ public class SupermarketTest {
         catalog.addProduct(rice, 2.49);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(TwoForAmount, cherryTomatoes, 0.99)
-                .createOffer();
+        Offer offer = new OfferBuilder(cherryTomatoes)
+                .create(0.99, 2);
         teller.addSpecialOffer(offer);
         Offer otherOffer = new OfferBuilder(PercentDiscount, rice, 10)
                 .createOffer();
@@ -214,9 +214,8 @@ public class SupermarketTest {
 
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(BundledDiscount, toothbrush, 10)
-                .addProduct(toothpaste)
-                .createOffer();
+        Offer offer = new OfferBuilder(toothbrush)
+                .create(toothpaste, 10);
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();

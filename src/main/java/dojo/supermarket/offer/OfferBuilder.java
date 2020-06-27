@@ -29,22 +29,19 @@ public class OfferBuilder {
 
     public Offer createOffer() {
         switch (offerType) {
-            case BundledDiscount:
-                assert products.size() > 1;
-                return new BundledOffer(products, discountPercentageOrAmount);
-            case TwoForAmount:
-                return new FixedAmountOffer(products.get(0), discountPercentageOrAmount, 2);
             case ThreeForTwo:
                 return new ThreeForTwoOffer(products.get(0));
             case PercentDiscount:
                 return new PercentDiscountOffer(products.get(0), discountPercentageOrAmount);
-            case FiveForAmount:
-                return new FixedAmountOffer(products.get(0), discountPercentageOrAmount, 5);
         }
         throw new UnsupportedOperationException();
     }
 
     public Offer create(double discountAmount, int quantity) {
         return new FixedAmountOffer(products.get(0), discountAmount, quantity);
+    }
+
+    public Offer create(Product bundledProduct, double discountPercentage) {
+        return new BundledOffer(products.get(0), bundledProduct, discountPercentage);
     }
 }

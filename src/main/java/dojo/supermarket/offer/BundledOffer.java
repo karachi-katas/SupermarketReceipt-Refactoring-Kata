@@ -4,25 +4,23 @@ import dojo.supermarket.model.Discount;
 import dojo.supermarket.model.Product;
 import dojo.supermarket.model.ShoppingCart;
 import dojo.supermarket.model.SupermarketCatalog;
-import java.util.List;
 
 public class BundledOffer extends Offer {
 
-    List<Product> products;
+    Product bundledProduct;
     double discountPercentage;
 
-    public BundledOffer(List<Product> products,
+    public BundledOffer(Product product, Product bundledProduct,
             double discountPercentage) {
-        super(products.get(0));
-        this.products = products;
+        super(product);
+        this.bundledProduct = bundledProduct;
         this.discountPercentage = discountPercentage;
     }
 
     @Override
     public Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
-        Product otherProduct = products.get(1);
-        if (shoppingCart.getProductQuantities().containsKey(otherProduct)) {
-            double discountPrice = (catalog.getUnitPrice(product)+catalog.getUnitPrice(otherProduct)) * discountPercentage/100;
+        if (shoppingCart.getProductQuantities().containsKey(bundledProduct)) {
+            double discountPrice = (catalog.getUnitPrice(product)+catalog.getUnitPrice(bundledProduct)) * discountPercentage/100;
             return new Discount(product, "", -discountPrice);
         }
         return null;
