@@ -1,5 +1,6 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.offer.BundledOffer;
 import dojo.supermarket.offer.Offer;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 public class ShoppingCart {
 
     Map<Product, Double> productQuantities = new HashMap<>();
+    Map<Product, Boolean> isOfferApplied = new HashMap<>();
 
     void addItem(Product product) {
         this.addItemQuantity(product, 1.0);
@@ -26,6 +28,7 @@ public class ShoppingCart {
             productQuantities.put(product, productQuantities.get(product) + quantity);
         } else {
             productQuantities.put(product, quantity);
+            isOfferApplied.put(product, false);
         }
     }
 
@@ -37,17 +40,31 @@ public class ShoppingCart {
         return productQuantities.get(product).intValue();
     }
 
+    public boolean isProductAvailableForOffer(Product product) {
+        return !isOfferApplied.get(product);
+    }
+
     void handleOffers(Receipt receipt, SupermarketCatalog catalog,
             List<Offer> offerList) {
 
         for (Product product : productQuantities().keySet()) {
-            offerList.stream().filter(offer -> offer.applicableOn(product)).findFirst()
-                    .ifPresent(offer -> {
+            if (isProductAvailableForOffer(product)) {
+
+                for (Offer offer: offerList) {
+                    if (offer.applicableOn(product)) {
                         Discount discount = offer.getDiscount(catalog, product, this);
                         if (discount != null) {
                             receipt.addDiscount(discount);
+                            setProductAvailedForOffer(product);
                         }
-                    });
+                        break;
+                    }
+                }
+            }
         }
+    }
+
+    public void setProductAvailedForOffer(Product product) {
+        isOfferApplied.put(product, true);
     }
 }

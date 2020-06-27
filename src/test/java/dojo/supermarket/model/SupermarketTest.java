@@ -215,4 +215,26 @@ public class SupermarketTest {
         Receipt receipt = teller.checksOutArticlesFrom(cart);
         assertEquals((0.99 + 1.79) * 0.9, receipt.getTotalPrice(), 0.01);
     }
+
+    @Test
+    public void bundledDiscountfooo() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothbrush = new Product("toothbrush", ProductUnit.Each);
+        catalog.addProduct(toothbrush, 0.99);
+        Product toothpaste = new Product("toothpaste", ProductUnit.Each);
+        catalog.addProduct(toothpaste, 1.79);
+
+        Teller teller = new Teller(catalog);
+        Offer offer = new OfferBuilder(toothbrush).create(toothpaste, 10);
+        Offer offer2 = new OfferBuilder(toothpaste).create(10);
+        teller.addSpecialOffer(offer);
+        teller.addSpecialOffer(offer2);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem(toothbrush);
+        cart.addItem(toothpaste);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+        assertEquals((0.99 + 1.79) * 0.9, receipt.getTotalPrice(), 0.01);
+    }
 }

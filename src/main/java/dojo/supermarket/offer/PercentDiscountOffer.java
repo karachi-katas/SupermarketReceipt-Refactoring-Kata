@@ -18,6 +18,10 @@ public class PercentDiscountOffer extends Offer {
     public Discount getDiscount(SupermarketCatalog catalog, Product product,
             ShoppingCart shoppingCart) {
 
+        if (!shoppingCart.isProductAvailableForOffer(product)) {
+            return null;
+        }
+
         return new Discount(product, discountPercentage + "% off", -shoppingCart
                 .getQuantity(product) * catalog.getUnitPrice(product)
                 * discountPercentage / 100.0);

@@ -19,6 +19,13 @@ public abstract class Offer {
     public abstract Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart);
 
     public boolean applicableOn(Product product) {
-        return product.equals(getProduct());
+        return product.equals(this.product);
+    }
+
+    @Override
+    public String toString() {
+        return "Offer{" +
+                "product=" + product +
+                '}';
     }
 }

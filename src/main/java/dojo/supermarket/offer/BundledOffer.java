@@ -21,7 +21,9 @@ public class BundledOffer extends Offer {
 
     @Override
     public Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
-        if (shoppingCart.getProductQuantities().containsKey(bundledProduct)) {
+        if (shoppingCart.isProductAvailableForOffer(bundledProduct)
+                && shoppingCart.getProductQuantities().containsKey(bundledProduct)) {
+            shoppingCart.setProductAvailedForOffer(bundledProduct);
             double discountPrice = (catalog.getUnitPrice(product)+catalog.getUnitPrice(bundledProduct)) * discountPercentage/100;
             return new Discount(product, "", -discountPrice);
         }

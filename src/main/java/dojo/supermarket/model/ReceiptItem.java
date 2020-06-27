@@ -48,5 +48,13 @@ public class ReceiptItem {
         return Objects.hash(product, price, totalPrice, quantity);
     }
 
-
+    @Override
+    public String toString() {
+        return "ReceiptItem{" +
+                "product=" + product +
+                ", price=" + price +
+                ", totalPrice=" + totalPrice +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

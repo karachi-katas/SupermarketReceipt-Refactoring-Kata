@@ -3,21 +3,20 @@ package dojo.supermarket.model;
 import dojo.supermarket.offer.Offer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class Teller {
 
     private final SupermarketCatalog catalog;
-    private Map<Product, Offer> offers = new HashMap<>();
-    private List<Offer> offersList = new ArrayList<>();
+    private List<Offer> offersList = new LinkedList<>();
 
     public Teller(SupermarketCatalog catalog) {
         this.catalog = catalog;
     }
 
     public void addSpecialOffer(Offer offer) {
-        this.offers.put(offer.getProduct(), offer);
         offersList.add(offer);
     }
 
