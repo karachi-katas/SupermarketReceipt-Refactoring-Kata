@@ -18,8 +18,8 @@ public class OfferBuilder {
         return new BundledOffer(product, bundledProduct, discountPercentage);
     }
 
-    public Offer create(int quantityPurchased, int quantityInOffer) {
-        return new ThreeForTwoOffer(product, quantityPurchased, quantityInOffer);
+    public Offer create(int quantity, int free) {
+        return new BuyXGetYFree(product, quantity, free);
     }
 
     public Offer create(double discountPercentage) {

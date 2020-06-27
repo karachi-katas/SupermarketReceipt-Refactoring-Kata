@@ -50,7 +50,7 @@ public class SupermarketTest {
 
         Teller teller = new Teller(catalog);
         Offer offer = new OfferBuilder(toothbrush)
-                .create(2, 3);
+                .create(2, 1);
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
