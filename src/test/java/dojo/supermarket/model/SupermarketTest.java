@@ -47,14 +47,29 @@ public class SupermarketTest {
         Teller teller = new Teller(catalog);
         teller.addSpecialOffer(SpecialOfferType.TwoForAmount, toothbrush, 0.99);
 
-
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(toothbrush, 2);
-
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
         assertEquals(0.99, receipt.getTotalPrice(), 0.01);
+    }
+
+    @Test
+    public void buyFiveToothBrushesAndGetTwoFree() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothbrush = new Product("toothbrush", ProductUnit.Each);
+        catalog.addProduct(toothbrush, 0.99);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, toothbrush, 0.99);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(toothbrush, 5);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        assertEquals(3 * 0.99, receipt.getTotalPrice(), 0.01);
     }
 
 
