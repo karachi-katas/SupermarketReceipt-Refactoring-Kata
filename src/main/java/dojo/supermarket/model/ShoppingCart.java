@@ -42,20 +42,8 @@ public class ShoppingCart {
             if (offers.containsKey(p)) {
                 Offer offer = offers.get(p);
                 double unitPrice = catalog.getUnitPrice(p);
-                int quantityAsInt = (int) quantity;
 
-                int x = 1;
-                if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    x = 3;
-                } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
-                    x = 2;
-                } if (offer.offerType == SpecialOfferType.FiveForAmount) {
-                    x = 5;
-                }
-
-                int numberOfXs = quantityAsInt / x;
-
-                Discount discount = DiscountFactory.getInstance(offer.offerType, p, quantity, offer, unitPrice, quantityAsInt, x, numberOfXs);
+                Discount discount = DiscountFactory.getInstance(offer.offerType, p, quantity, offer, unitPrice);
 
                 if (discount != null)
                     receipt.addDiscount(discount);
