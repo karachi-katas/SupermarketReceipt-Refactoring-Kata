@@ -22,7 +22,7 @@ public class SupermarketTest {
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(apples, 2.5);
-        
+
         // ACT
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
@@ -120,28 +120,27 @@ public class SupermarketTest {
         assertEquals("5 for 7.49", receipt.getDiscounts().get(0).getDescription());
         assertEquals(-1.46,receipt.getDiscounts().get(0).getDiscountAmount(),0.01);
 
-        //assertEquals(3,);
     }
 
     @Test
-    public void ShouldHave5ForAmountFor(){
+    public void ShouldHaveDiscountOnTwoBoxesOfCherries(){
 
         SupermarketCatalog catalog = new FakeCatalog();
         Product cherry = new Product("cherry", ProductUnit.Each);
-        catalog.addProduct(toothpaste, 1.79);
+        catalog.addProduct(cherry, 0.69);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.FiveForAmount, toothpaste, 7.49);
+        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, cherry, 0.99);
 
         ShoppingCart cart = new ShoppingCart();
-        cart.addItemQuantity(toothpaste, 5);
+        cart.addItemQuantity(cherry, 2);
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
-        assertEquals("5 for 7.49", receipt.getDiscounts().get(0).getDescription());
-        assertEquals(-1.46,receipt.getDiscounts().get(0).getDiscountAmount(),0.01);
+        assertEquals("2 for 0.99", receipt.getDiscounts().get(0).getDescription());
+        assertEquals(-0.38,receipt.getDiscounts().get(0).getDiscountAmount(),0.01);
+        //Todo: Validate why this isnt 0.3
 
-        //assertEquals(3,);
     }
 
 
