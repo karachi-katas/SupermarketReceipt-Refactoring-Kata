@@ -33,50 +33,56 @@ public class ShoppingCart {
         }
     }
 
+    private double getQuantity(Product product) {
+        return productQuantities.get(product);
+    }
+
+    private int getQuantityAsInt(Product product) {
+        return productQuantities.get(product).intValue();
+    }
+
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
         for (Product product: productQuantities().keySet()) {
-            double quantity = productQuantities.get(product);
             if (offers.containsKey(product)) {
                 Offer offer = offers.get(product);
-                double unitPrice = catalog.getUnitPrice(product);
-                int quantityAsInt = (int) quantity;
                 Discount discount = null;
-                int x = 1;
 
                 if (offer.offerType == SpecialOfferType.BundledDiscount) {
                     discount = offer.getDiscount(catalog, product, this);
                 }
-                else if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    x = 3;
 
-                } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
-                    x = 2;
-                    if (quantityAsInt >= 2) {
-                        double total = offer.discountPercentageOrAmount * (quantityAsInt / x) + quantityAsInt % 2 * unitPrice;
-                        double discountN = unitPrice * quantity - total;
-                        discount = new Discount(product, "2 for " + offer.discountPercentageOrAmount, -discountN);
-                    }
+                if (offer.offerType == SpecialOfferType.TwoForAmount) {
+                    discount = getDiscount(catalog, product, offer);
 
-                } if (offer.offerType == SpecialOfferType.FiveForAmount) {
-                    x = 5;
                 }
-                int numberOfXs = quantityAsInt / x;
-                if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
-                    double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
+
+                if (offer.offerType == SpecialOfferType.ThreeForTwo && getQuantityAsInt(product) > 2) {
+                    int numberOfXs = getQuantityAsInt(product) / 3;
+                    double discountAmount = getQuantity(product) * catalog.getUnitPrice(product) - ((numberOfXs * 2 * catalog.getUnitPrice(product)) + getQuantityAsInt(product) % 3 * catalog.getUnitPrice(product));
                     discount = new Discount(product, "3 for 2", -discountAmount);
                 }
                 if (offer.offerType == SpecialOfferType.PercentDiscount) {
-                    discount = new Discount(product, offer.discountPercentageOrAmount + "% off", -quantity * unitPrice * offer.discountPercentageOrAmount / 100.0);
+                    discount = new Discount(product, offer.discountPercentageOrAmount + "% off", -getQuantity(product) * catalog.getUnitPrice(product) * offer.discountPercentageOrAmount / 100.0);
                 }
-                if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    double discountTotal = unitPrice * quantity - (offer.discountPercentageOrAmount * numberOfXs + quantityAsInt % 5 * unitPrice);
-                    discount = new Discount(product, x + " for " + offer.discountPercentageOrAmount, -discountTotal);
+                if (offer.offerType == SpecialOfferType.FiveForAmount && getQuantityAsInt(product) >= 5) {
+                    int numberOfXs = getQuantityAsInt(product) / 5;
+                    double discountTotal = catalog.getUnitPrice(product) * getQuantity(product) - (offer.discountPercentageOrAmount * numberOfXs + getQuantityAsInt(product) % 5 * catalog.getUnitPrice(product));
+                    discount = new Discount(product, 5 + " for " + offer.discountPercentageOrAmount, -discountTotal);
                 }
                 if (discount != null)
                     receipt.addDiscount(discount);
             }
 
         }
+    }
+
+    private Discount getDiscount(SupermarketCatalog catalog, Product product, Offer offer) {
+        if (getQuantityAsInt(product) >= 2) {
+            double total = offer.discountPercentageOrAmount * (getQuantityAsInt(product) / 2) + getQuantityAsInt(product) % 2 * catalog.getUnitPrice(product);
+            double discountN = catalog.getUnitPrice(product) * getQuantity(product) - total;
+            return new Discount(product, "2 for " + offer.discountPercentageOrAmount, -discountN);
+        }
+        return null;
     }
 
 }
