@@ -1,4 +1,10 @@
-package dojo.supermarket.model;
+package dojo.supermarket.offer;
+
+import dojo.supermarket.model.Discount;
+import dojo.supermarket.model.Product;
+import dojo.supermarket.model.ShoppingCart;
+import dojo.supermarket.model.SpecialOfferType;
+import dojo.supermarket.model.SupermarketCatalog;
 
 public class Offer {
     SpecialOfferType offerType;
@@ -11,21 +17,11 @@ public class Offer {
         this.product = product;
     }
 
-    Product getProduct() {
+    public Product getProduct() {
         return this.product;
     }
 
-    Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
-        if (offerType == SpecialOfferType.TwoForAmount) {
-            if (shoppingCart.getQuantityAsInt(product) >= 2) {
-                double total = discountPercentageOrAmount * (shoppingCart.getQuantityAsInt(product) / 2) + shoppingCart
-                        .getQuantityAsInt(
-                        product) % 2 * catalog.getUnitPrice(product);
-                double discountN = catalog.getUnitPrice(product) * shoppingCart.getQuantity(product) - total;
-                return new Discount(product, "2 for " + discountPercentageOrAmount, -discountN);
-            }
-            return null;
-        }
+    public Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
 
         if (offerType == SpecialOfferType.ThreeForTwo && shoppingCart.getQuantityAsInt(product) > 2) {
             int numberOfXs = shoppingCart.getQuantityAsInt(product) / 3;

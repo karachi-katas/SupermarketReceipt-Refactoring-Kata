@@ -1,5 +1,10 @@
-package dojo.supermarket.model;
+package dojo.supermarket.offer;
 
+import dojo.supermarket.model.Discount;
+import dojo.supermarket.model.Product;
+import dojo.supermarket.model.ShoppingCart;
+import dojo.supermarket.model.SpecialOfferType;
+import dojo.supermarket.model.SupermarketCatalog;
 import java.util.List;
 
 public class BundledOffer extends Offer {
@@ -12,9 +17,9 @@ public class BundledOffer extends Offer {
     }
 
     @Override
-    Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
+    public Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
         Product otherProduct = products.get(1);
-        if (shoppingCart.productQuantities.containsKey(otherProduct)) {
+        if (shoppingCart.getProductQuantities().containsKey(otherProduct)) {
             double discountPrice = (catalog.getUnitPrice(product)+catalog.getUnitPrice(otherProduct))*0.10;
             return new Discount(product, "", -discountPrice);
         }

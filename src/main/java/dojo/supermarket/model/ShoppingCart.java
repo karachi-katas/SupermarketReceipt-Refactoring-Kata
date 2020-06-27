@@ -1,5 +1,6 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.offer.Offer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,9 @@ public class ShoppingCart {
         return productQuantities;
     }
 
+    public Map<Product, Double> getProductQuantities() {
+        return productQuantities;
+    }
 
     public void addItemQuantity(Product product, double quantity) {
         items.add(new ProductQuantity(product, quantity));
@@ -33,11 +37,11 @@ public class ShoppingCart {
         }
     }
 
-    double getQuantity(Product product) {
+    public double getQuantity(Product product) {
         return productQuantities.get(product);
     }
 
-    int getQuantityAsInt(Product product) {
+    public int getQuantityAsInt(Product product) {
         return productQuantities.get(product).intValue();
     }
 

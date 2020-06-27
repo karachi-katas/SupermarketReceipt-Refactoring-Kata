@@ -1,5 +1,7 @@
-package dojo.supermarket.model;
+package dojo.supermarket.offer;
 
+import dojo.supermarket.model.Product;
+import dojo.supermarket.model.SpecialOfferType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class OfferBuilder {
             case BundledDiscount:
                 assert products.size() > 1;
                 return new BundledOffer(offerType, products, discountPercentageOrAmount);
+            case TwoForAmount:
+                return new TwoForAmountOffer(offerType, products.get(0), discountPercentageOrAmount);
         }
 
         assert products.size() == 1;

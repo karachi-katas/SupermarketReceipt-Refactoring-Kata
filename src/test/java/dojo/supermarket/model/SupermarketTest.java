@@ -6,8 +6,8 @@ import static dojo.supermarket.model.SpecialOfferType.PercentDiscount;
 import static dojo.supermarket.model.SpecialOfferType.TwoForAmount;
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import dojo.supermarket.offer.Offer;
+import dojo.supermarket.offer.OfferBuilder;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
