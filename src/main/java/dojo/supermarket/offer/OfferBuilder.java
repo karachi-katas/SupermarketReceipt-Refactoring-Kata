@@ -33,9 +33,9 @@ public class OfferBuilder {
                 return new ThreeForTwoOffer(offerType, products.get(0), discountPercentageOrAmount);
             case PercentDiscount:
                 return new PercentDiscountOffer(offerType, products.get(0), discountPercentageOrAmount);
+            case FiveForAmount:
+                return new FiveForAmountOffer(offerType, products.get(0), discountPercentageOrAmount);
         }
-
-        assert products.size() == 1;
-        return new Offer(offerType, products.get(0), discountPercentageOrAmount);
+        throw new UnsupportedOperationException();
     }
 }
