@@ -15,6 +15,10 @@ public class ReceiptItem {
         this.totalPrice = totalPrice;
     }
 
+    ReceiptItem(Product p, double quantity, double price) {
+        this(p, quantity, price, quantity * price);
+    }
+
     public double getPrice() {
         return this.price;
     }
@@ -48,5 +52,13 @@ public class ReceiptItem {
         return Objects.hash(product, price, totalPrice, quantity);
     }
 
-
+    @Override
+    public String toString() {
+        return "ReceiptItem{" +
+                "product=" + product +
+                ", price=" + price +
+                ", totalPrice=" + totalPrice +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

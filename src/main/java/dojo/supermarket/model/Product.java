@@ -11,6 +11,14 @@ public class Product {
         this.unit = unit;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", unit=" + unit +
+                '}';
+    }
+
     public String getName() {
         return name;
     }
