@@ -80,4 +80,69 @@ public class SupermarketTest {
         assertEquals(-20.0,receipt.getDiscounts().get(0).getDiscountAmount(),0.1);
     }
 
+    @Test
+    public void ShouldHave10PercentDiscountOnRice(){
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product rice = new Product("rice", ProductUnit.Each);
+        catalog.addProduct(rice, 100);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.TenPercentDiscount, rice, 10.0);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(rice, 1);
+
+
+        // ACT
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        //receipt.getItems();
+        assertEquals("10.0% off", receipt.getDiscounts().get(0).getDescription());
+        assertEquals(-10.0,receipt.getDiscounts().get(0).getDiscountAmount(),0.1);
+    }
+
+
+    @Test
+    public void ShouldHave5ForAmountForToothPaste(){
+
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothpaste = new Product("toothpaste", ProductUnit.Each);
+        catalog.addProduct(toothpaste, 1.79);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.FiveForAmount, toothpaste, 7.49);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(toothpaste, 5);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        assertEquals("5 for 7.49", receipt.getDiscounts().get(0).getDescription());
+        assertEquals(-1.46,receipt.getDiscounts().get(0).getDiscountAmount(),0.01);
+
+        //assertEquals(3,);
+    }
+
+    @Test
+    public void ShouldHave5ForAmountFor(){
+
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product cherry = new Product("cherry", ProductUnit.Each);
+        catalog.addProduct(toothpaste, 1.79);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.FiveForAmount, toothpaste, 7.49);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(toothpaste, 5);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        assertEquals("5 for 7.49", receipt.getDiscounts().get(0).getDescription());
+        assertEquals(-1.46,receipt.getDiscounts().get(0).getDiscountAmount(),0.01);
+
+        //assertEquals(3,);
+    }
+
+
 }
