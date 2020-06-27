@@ -1,20 +1,12 @@
 package dojo.supermarket.model;
 
 import dojo.supermarket.offer.Offer;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ShoppingCart {
 
-    private final List<ProductQuantity> items = new ArrayList<>();
     Map<Product, Double> productQuantities = new HashMap<>();
-
-
-    List<ProductQuantity> getItems() {
-        return new ArrayList<>(items);
-    }
 
     void addItem(Product product) {
         this.addItemQuantity(product, 1.0);
@@ -29,7 +21,6 @@ public class ShoppingCart {
     }
 
     public void addItemQuantity(Product product, double quantity) {
-        items.add(new ProductQuantity(product, quantity));
         if (productQuantities.containsKey(product)) {
             productQuantities.put(product, productQuantities.get(product) + quantity);
         } else {
@@ -46,13 +37,14 @@ public class ShoppingCart {
     }
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
-        for (Product product: productQuantities().keySet()) {
+        for (Product product : productQuantities().keySet()) {
             if (offers.containsKey(product)) {
                 Offer offer = offers.get(product);
 
                 Discount discount = offer.getDiscount(catalog, product, this);
-                if (discount != null)
+                if (discount != null) {
                     receipt.addDiscount(discount);
+                }
             }
         }
     }
