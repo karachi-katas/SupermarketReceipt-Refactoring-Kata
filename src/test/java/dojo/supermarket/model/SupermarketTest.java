@@ -38,5 +38,46 @@ public class SupermarketTest {
 
     }
 
+    @Test
+    public void ShouldHave3For2DiscountOnToothBrushes(){
+
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothbrush = new Product("toothbrush", ProductUnit.Each);
+        catalog.addProduct(toothbrush, 1);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.ThreeForTwo, toothbrush, 10.0);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(toothbrush, 3);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        assertEquals("3 for 2", receipt.getDiscounts().get(0).getDescription());
+        assertEquals(-1.0,receipt.getDiscounts().get(0).getDiscountAmount(),0.1);
+
+        //assertEquals(3,);
+    }
+
+    @Test
+    public void ShouldHave20PercentDiscountOnApples(){
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product apples = new Product("apples", ProductUnit.Kilo);
+        catalog.addProduct(apples, 100);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.TenPercentDiscount, apples, 20.0);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(apples, 1);
+
+
+        // ACT
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        //receipt.getItems();
+        assertEquals("20.0% off", receipt.getDiscounts().get(0).getDescription());
+        assertEquals(-20.0,receipt.getDiscounts().get(0).getDiscountAmount(),0.1);
+    }
 
 }
