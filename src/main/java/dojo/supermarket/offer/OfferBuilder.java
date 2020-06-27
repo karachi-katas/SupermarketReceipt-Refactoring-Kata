@@ -28,13 +28,13 @@ public class OfferBuilder {
                 assert products.size() > 1;
                 return new BundledOffer(products, discountPercentageOrAmount);
             case TwoForAmount:
-                return new TwoForAmountOffer(products.get(0), discountPercentageOrAmount);
+                return new FixedAmountOffer(products.get(0), discountPercentageOrAmount, 2);
             case ThreeForTwo:
                 return new ThreeForTwoOffer(products.get(0));
             case PercentDiscount:
                 return new PercentDiscountOffer(products.get(0), discountPercentageOrAmount);
             case FiveForAmount:
-                return new FiveForAmountOffer(products.get(0), discountPercentageOrAmount);
+                return new FixedAmountOffer(products.get(0), discountPercentageOrAmount, 5);
         }
         throw new UnsupportedOperationException();
     }
