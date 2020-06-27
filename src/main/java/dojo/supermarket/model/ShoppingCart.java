@@ -39,8 +39,9 @@ public class ShoppingCart {
 
     void handleOffers(Receipt receipt, SupermarketCatalog catalog,
             List<Offer> offerList) {
+
         for (Product product : productQuantities().keySet()) {
-            offerList.stream().filter(offer -> foo(offer, product)).findFirst()
+            offerList.stream().filter(offer -> offer.applicableOn(product)).findFirst()
                     .ifPresent(offer -> {
                         Discount discount = offer.getDiscount(catalog, product, this);
                         if (discount != null) {
@@ -48,9 +49,5 @@ public class ShoppingCart {
                         }
                     });
         }
-    }
-
-    private boolean foo(Offer offer, Product product) {
-        return product.equals(offer.getProduct());
     }
 }

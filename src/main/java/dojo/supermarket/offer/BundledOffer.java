@@ -10,6 +10,8 @@ public class BundledOffer extends Offer {
     Product bundledProduct;
     double discountPercentage;
 
+    // set of products
+
     public BundledOffer(Product product, Product bundledProduct,
             double discountPercentage) {
         super(product);
