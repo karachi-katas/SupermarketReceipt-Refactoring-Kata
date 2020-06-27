@@ -74,4 +74,38 @@ public class SupermarketTest {
 
         Assert.assertEquals(Arrays.asList(expectedItem1, expectedItem2), receipt.getItems());
     }
+
+    @Test
+    public void testThreeForTwoOnToothbrushes() {
+        // SETUP
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothbrush = new Product("toothbrush", ProductUnit.Each);
+        catalog.addProduct(toothbrush, 0.99);
+        Product apples = new Product("apples", ProductUnit.Kilo);
+        catalog.addProduct(apples, 1.99);
+        Product tomatoes = new Product("cherry tomatoes", ProductUnit.Each);
+        catalog.addProduct(tomatoes, 0.69);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(new Offer(SpecialOfferType.ThreeForTwo, toothbrush, 0.0));
+//        teller.addSpecialOffer(new Offer(SpecialOfferType.TwoForAmount, tomatoes, 0.99));
+//        teller.addSpecialOffer(new Offer(SpecialOfferType.TwoForAmount, tomatoes, 0.99));
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(toothbrush, 3);
+//        cart.addItemQuantity(tomatoes, 2);
+
+        // ACT
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        // ASSERT
+        assertEquals(1.98, receipt.getTotalPrice(), 0.01);
+        assertEquals(Arrays.asList(new Discount(toothbrush, "3 for 2", (1.98 - (catalog.getUnitPrice(toothbrush) * 3.0)))), receipt.getDiscounts());
+        assertEquals(1, receipt.getItems().size());
+
+        ReceiptItem expectedItem1 = new ReceiptItem(toothbrush, 3, 0.99);
+//        ReceiptItem expectedItem2 = new ReceiptItem(tomatoes, 2.0, 0.69);
+
+        Assert.assertEquals(Arrays.asList(expectedItem1), receipt.getItems());
+    }
 }
