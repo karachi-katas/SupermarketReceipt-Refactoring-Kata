@@ -54,14 +54,10 @@ public class ShoppingCart {
                     }
 
                 }
-
-                if (offer.offerType == SpecialOfferType.FiveForAmount) {
-                    x = 5;
-                }
                 int numberOfXs = quantityAsInt / x;
                 discount = calculateThreeForTwoDiscount(p, quantity, offer, unitPrice, quantityAsInt, discount, numberOfXs);
                 discount = calculateTenPercentDiscount(p, quantity, offer, unitPrice, discount);
-                discount = calculatefiveForAmountDiscount(p, quantity, offer, unitPrice, quantityAsInt, discount, x, numberOfXs);
+                discount = calculatefiveForAmountDiscount(p, quantity, offer, unitPrice, quantityAsInt, discount);
                 if (discount != null)
                     receipt.addDiscount(discount);
             }
@@ -87,8 +83,10 @@ public class ShoppingCart {
     }
 
     private Discount calculatefiveForAmountDiscount(Product p, double quantity, Offer offer,
-      double unitPrice,
-      int quantityAsInt, Discount discount, int x, int numberOfXs) {
+                                                    double unitPrice,
+                                                    int quantityAsInt, Discount discount) {
+        int x = 5;
+        int numberOfXs = quantityAsInt / x;
         if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
             double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
             discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
