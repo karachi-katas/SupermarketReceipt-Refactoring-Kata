@@ -31,6 +31,8 @@ public class OfferBuilder {
                 return new TwoForAmountOffer(offerType, products.get(0), discountPercentageOrAmount);
             case ThreeForTwo:
                 return new ThreeForTwoOffer(offerType, products.get(0), discountPercentageOrAmount);
+            case PercentDiscount:
+                return new PercentDiscountOffer(offerType, products.get(0), discountPercentageOrAmount);
         }
 
         assert products.size() == 1;

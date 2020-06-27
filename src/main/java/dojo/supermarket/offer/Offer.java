@@ -23,10 +23,6 @@ public class Offer {
 
     public Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
 
-        if (offerType == SpecialOfferType.PercentDiscount) {
-            return new Discount(product, discountPercentageOrAmount + "% off", -shoppingCart
-                    .getQuantity(product) * catalog.getUnitPrice(product) * discountPercentageOrAmount / 100.0);
-        }
         if (offerType == SpecialOfferType.FiveForAmount && shoppingCart.getQuantityAsInt(product) >= 5) {
             int numberOfXs = shoppingCart.getQuantityAsInt(product) / 5;
             double discountTotal = catalog.getUnitPrice(product) * shoppingCart.getQuantity(product) - (
