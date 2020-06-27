@@ -17,6 +17,10 @@ public class Teller {
         this.offers.put(product, new Offer(offerType, product, discountPercentage));
     }
 
+    public void addSpecialOffer(SpecialOfferType offerType, List<Product> product, double discountPercentage) {
+        this.offers.put(product.get(0), new BundledOffer(offerType, product, discountPercentage));
+    }
+
     public Receipt checksOutArticlesFrom(ShoppingCart theCart) {
         Receipt receipt = new Receipt();
         List<ProductQuantity> productQuantities = theCart.getItems();

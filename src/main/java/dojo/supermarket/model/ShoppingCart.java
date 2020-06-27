@@ -42,7 +42,15 @@ public class ShoppingCart {
                 int quantityAsInt = (int) quantity;
                 Discount discount = null;
                 int x = 1;
-                if (offer.offerType == SpecialOfferType.ThreeForTwo) {
+
+                if (offer.offerType == SpecialOfferType.BundledDiscount) {
+                    Product otherProduct = ((BundledOffer) offer).products.get(1);
+                    if (productQuantities.containsKey(otherProduct)) {
+                        double discountPrice = (catalog.getUnitPrice(p)+catalog.getUnitPrice(otherProduct))*0.10;
+                        discount = new Discount(p, "", -discountPrice);
+                    }
+                }
+                else if (offer.offerType == SpecialOfferType.ThreeForTwo) {
                     x = 3;
 
                 } else if (offer.offerType == SpecialOfferType.TwoForAmount) {

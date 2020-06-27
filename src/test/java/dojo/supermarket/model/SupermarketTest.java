@@ -2,6 +2,8 @@ package dojo.supermarket.model;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
@@ -142,7 +144,7 @@ public class SupermarketTest {
     }
 
     @Test
-    public void fooo() {
+    public void multipleDiscounts() {
         SupermarketCatalog catalog = new FakeCatalog();
         Product cherryTomatoes = new Product("cherryTomatoes", ProductUnit.Each);
         catalog.addProduct(cherryTomatoes, 0.69);
@@ -177,5 +179,27 @@ public class SupermarketTest {
 //        List<Discount> discounts = receipt.getDiscounts();
 //        assertEquals(discounts.get(0).getProduct().getName(), "cherryTomatoes");
 //        assertEquals(discounts.get(0).getDiscountAmount(),  0.99 - 0.69 * 2, 0.01);
+    }
+
+    @Test
+    public void bundledDiscount() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothbrush = new Product("toothbrush", ProductUnit.Each);
+        catalog.addProduct(toothbrush, 0.99);
+        Product toothpaste = new Product("toothpaste", ProductUnit.Each);
+        catalog.addProduct(toothpaste, 1.79);
+
+
+        Teller teller = new Teller(catalog);
+        List<Product> products = Arrays.asList(toothbrush, toothpaste);
+        teller.addSpecialOffer(SpecialOfferType.BundledDiscount, products, 10);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem(toothbrush);
+        cart.addItem(toothpaste);
+
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+        assertEquals((0.99+1.79)*0.9, receipt.getTotalPrice(), 0.01);
     }
 }
