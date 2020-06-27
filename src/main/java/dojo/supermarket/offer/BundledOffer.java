@@ -12,7 +12,7 @@ public class BundledOffer extends Offer {
     List<Product> products;
 
     public BundledOffer(SpecialOfferType offerType, List<Product> products, double discountPercentageOrAmount) {
-        super(offerType, products.get(0), discountPercentageOrAmount);
+        super(offerType, products.get(0));
         this.products = products;
     }
 

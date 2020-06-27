@@ -8,9 +8,12 @@ import dojo.supermarket.model.SupermarketCatalog;
 
 public class FiveForAmountOffer extends Offer {
 
+    double discountAmount;
+
     public FiveForAmountOffer(SpecialOfferType offerType, Product product,
-            double discountPercentageOrAmount) {
-        super(offerType, product, discountPercentageOrAmount);
+            double discountAmount) {
+        super(offerType, product);
+        this.discountAmount = discountAmount;
     }
 
     @Override
@@ -19,8 +22,8 @@ public class FiveForAmountOffer extends Offer {
         if (offerType == SpecialOfferType.FiveForAmount && shoppingCart.getQuantityAsInt(product) >= 5) {
             int numberOfXs = shoppingCart.getQuantityAsInt(product) / 5;
             double discountTotal = catalog.getUnitPrice(product) * shoppingCart.getQuantity(product) - (
-                    discountPercentageOrAmount * numberOfXs + shoppingCart.getQuantityAsInt(product) % 5 * catalog.getUnitPrice(product));
-            return new Discount(product, 5 + " for " + discountPercentageOrAmount, -discountTotal);
+                    discountAmount * numberOfXs + shoppingCart.getQuantityAsInt(product) % 5 * catalog.getUnitPrice(product));
+            return new Discount(product, 5 + " for " + discountAmount, -discountTotal);
         }
         return null;
     }

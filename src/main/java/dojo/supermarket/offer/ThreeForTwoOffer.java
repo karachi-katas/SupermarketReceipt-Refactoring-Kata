@@ -10,7 +10,7 @@ public class ThreeForTwoOffer extends Offer {
 
     public ThreeForTwoOffer(SpecialOfferType offerType, Product product,
             double discountPercentageOrAmount) {
-        super(offerType, product, discountPercentageOrAmount);
+        super(offerType, product);
     }
 
     @Override

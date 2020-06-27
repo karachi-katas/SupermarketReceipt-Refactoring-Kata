@@ -9,11 +9,9 @@ import dojo.supermarket.model.SupermarketCatalog;
 public abstract class Offer {
     SpecialOfferType offerType;
     private final Product product;
-    double discountPercentageOrAmount;
 
-    public Offer(SpecialOfferType offerType, Product product, double discountPercentageOrAmount) {
+    public Offer(SpecialOfferType offerType, Product product) {
         this.offerType = offerType;
-        this.discountPercentageOrAmount = discountPercentageOrAmount;
         this.product = product;
     }
 
