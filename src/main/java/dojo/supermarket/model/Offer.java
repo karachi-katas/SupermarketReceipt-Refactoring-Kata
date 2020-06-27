@@ -15,4 +15,7 @@ public class Offer {
         return this.product;
     }
 
+    public double getArgument() {
+        return argument;
+    }
 }

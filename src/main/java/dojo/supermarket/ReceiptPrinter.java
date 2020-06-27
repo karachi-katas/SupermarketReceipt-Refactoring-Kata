@@ -1,5 +1,6 @@
 package dojo.supermarket;
 
+import dojo.supermarket.discounts.Discount;
 import dojo.supermarket.model.*;
 
 import java.util.Locale;

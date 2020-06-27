@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Collections;
 
+import dojo.supermarket.discounts.Discount;
 import org.junit.Assert;
 import org.junit.Test;
 
