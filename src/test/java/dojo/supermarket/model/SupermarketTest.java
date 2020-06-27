@@ -72,5 +72,20 @@ public class SupermarketTest {
         assertEquals(3 * 0.99, receipt.getTotalPrice(), 0.01);
     }
 
+    @Test
+    public void tenPercentOnRice() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product rice = new Product("rice", ProductUnit.Kilo);
+        catalog.addProduct(rice, 1.99);
 
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.TenPercentDiscount, rice, 10);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(rice, 1);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        assertEquals(1.99 * 0.9, receipt.getTotalPrice(), 0.01);
+    }
 }
