@@ -1,5 +1,9 @@
 package dojo.supermarket.model;
 
+import static dojo.supermarket.model.SpecialOfferType.BundledDiscount;
+import static dojo.supermarket.model.SpecialOfferType.FiveForAmount;
+import static dojo.supermarket.model.SpecialOfferType.PercentDiscount;
+import static dojo.supermarket.model.SpecialOfferType.TwoForAmount;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -21,7 +25,9 @@ public class SupermarketTest {
         catalog.addProduct(apples, 1.99);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.PercentDiscount, toothbrush, 10.0);
+        Offer offer = new OfferBuilder(PercentDiscount, toothbrush, 10)
+                .createOffer();
+        teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(apples, 2.5);
@@ -48,7 +54,9 @@ public class SupermarketTest {
         catalog.addProduct(toothbrush, 0.99);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, toothbrush, 0.99);
+        Offer offer = new OfferBuilder(TwoForAmount, toothbrush, 0.99)
+                .createOffer();
+        teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(toothbrush, 2);
@@ -65,7 +73,9 @@ public class SupermarketTest {
         catalog.addProduct(toothbrush, 0.99);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, toothbrush, 0.99);
+        Offer offer = new OfferBuilder(TwoForAmount, toothbrush, 0.99)
+                .createOffer();
+        teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(toothbrush, 5);
@@ -82,7 +92,9 @@ public class SupermarketTest {
         catalog.addProduct(rice, 2.49);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.PercentDiscount, rice, 10);
+        Offer offer = new OfferBuilder(PercentDiscount, rice, 10)
+                .createOffer();
+        teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(rice, 1);
@@ -99,7 +111,9 @@ public class SupermarketTest {
         catalog.addProduct(apple, 1.99);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.PercentDiscount, apple, 20);
+        Offer offer = new OfferBuilder(PercentDiscount, apple, 20)
+                .createOffer();
+        teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(apple, 1);
@@ -116,7 +130,9 @@ public class SupermarketTest {
         catalog.addProduct(toothpaste, 1.79);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.FiveForAmount, toothpaste, 7.49);
+        Offer offer = new OfferBuilder(FiveForAmount, toothpaste, 7.49)
+                .createOffer();
+        teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(toothpaste, 5);
@@ -133,7 +149,9 @@ public class SupermarketTest {
         catalog.addProduct(cherryTomatoes, 0.69);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, cherryTomatoes, 0.99);
+        Offer offer = new OfferBuilder(TwoForAmount, cherryTomatoes, 0.99)
+                .createOffer();
+        teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(cherryTomatoes, 2);
@@ -152,8 +170,12 @@ public class SupermarketTest {
         catalog.addProduct(rice, 2.49);
 
         Teller teller = new Teller(catalog);
-        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, cherryTomatoes, 0.99);
-        teller.addSpecialOffer(SpecialOfferType.PercentDiscount, rice, 10);
+        Offer offer = new OfferBuilder(TwoForAmount, cherryTomatoes, 0.99)
+                .createOffer();
+        teller.addSpecialOffer(offer);
+        Offer otherOffer = new OfferBuilder(PercentDiscount, rice, 10)
+                .createOffer();
+        teller.addSpecialOffer(otherOffer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(cherryTomatoes, 3);
@@ -191,8 +213,10 @@ public class SupermarketTest {
 
 
         Teller teller = new Teller(catalog);
-        List<Product> products = Arrays.asList(toothbrush, toothpaste);
-        teller.addSpecialOffer(SpecialOfferType.BundledDiscount, products, 10);
+        Offer offer = new OfferBuilder(BundledDiscount, toothbrush, 10)
+                .addProduct(toothpaste)
+                .createOffer();
+        teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItem(toothbrush);

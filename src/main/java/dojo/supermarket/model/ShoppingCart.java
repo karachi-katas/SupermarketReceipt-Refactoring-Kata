@@ -50,7 +50,6 @@ public class ShoppingCart {
                 if (discount != null)
                     receipt.addDiscount(discount);
             }
-
         }
     }
 
