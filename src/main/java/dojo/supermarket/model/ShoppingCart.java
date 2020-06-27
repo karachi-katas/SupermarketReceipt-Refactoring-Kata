@@ -41,10 +41,9 @@ public class ShoppingCart {
                 double unitPrice = catalog.getUnitPrice(p);
                 int quantityAsInt = (int) quantity;
                 Discount discount = null;
-                int x = 1;
+
                 if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
-                    x = 3;
-                    int numberOfXs = quantityAsInt / x;
+                    int numberOfXs = quantityAsInt / 3;
                     double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
                     discount = new Discount(p, "3 for 2", -discountAmount);
                 } else if (offer.offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
@@ -65,14 +64,37 @@ public class ShoppingCart {
     }
 
 
-    private Discount handleDiscountXForAmount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt, int x)
-    {
+    private Discount handleDiscountXForAmount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt, int discountedItemFactor) {
         Discount discount;
-        double total = offer.argument * (quantityAsInt / x) + quantityAsInt % x * unitPrice;
+        double total = offer.argument * (quantityAsInt / discountedItemFactor) + quantityAsInt % discountedItemFactor * unitPrice;
         double discountTotal = unitPrice * quantity - total;
-        discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
+        discount = new Discount(p, discountedItemFactor + " for " + offer.argument, -discountTotal);
         return discount;
     }
 
 
+    public void handleBundle(Receipt receipt, Map<Bundle, Integer> bundles, SupermarketCatalog catalog) {
+        for (Bundle bundle: bundles.keySet()) {
+
+            boolean canBundleDiscountBeApplied = true;
+            for (ProductQuantity productQuantity: bundle.bundleProducts) {
+                if (productQuantity.getQuantity() != productQuantities.get(productQuantity.getProduct())) {
+                    canBundleDiscountBeApplied = false;
+                }
+            }
+
+            if (canBundleDiscountBeApplied) {
+                int discountPercentage = bundles.get(bundle);
+
+
+            }
+
+        }
+        for (Product p: productQuantities().keySet()) {
+            double quantity = productQuantities.get(p);
+
+
+        }
+
+    }
 }
