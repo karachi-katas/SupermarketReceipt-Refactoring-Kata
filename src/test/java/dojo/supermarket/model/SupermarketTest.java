@@ -88,12 +88,9 @@ public class SupermarketTest {
 
         Teller teller = new Teller(catalog);
         teller.addSpecialOffer(new Offer(SpecialOfferType.ThreeForTwo, toothbrush, 0.0));
-//        teller.addSpecialOffer(new Offer(SpecialOfferType.TwoForAmount, tomatoes, 0.99));
-//        teller.addSpecialOffer(new Offer(SpecialOfferType.TwoForAmount, tomatoes, 0.99));
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(toothbrush, 3);
-//        cart.addItemQuantity(tomatoes, 2);
 
         // ACT
         Receipt receipt = teller.checksOutArticlesFrom(cart);
@@ -104,7 +101,38 @@ public class SupermarketTest {
         assertEquals(1, receipt.getItems().size());
 
         ReceiptItem expectedItem1 = new ReceiptItem(toothbrush, 3, 0.99);
-//        ReceiptItem expectedItem2 = new ReceiptItem(tomatoes, 2.0, 0.69);
+
+        Assert.assertEquals(Arrays.asList(expectedItem1), receipt.getItems());
+    }
+
+    @Test
+    public void testFor10PercentOffOnRice() {
+        // SETUP
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothbrush = new Product("toothbrush", ProductUnit.Each);
+        catalog.addProduct(toothbrush, 0.99);
+        Product apples = new Product("apples", ProductUnit.Kilo);
+        catalog.addProduct(apples, 1.99);
+        Product tomatoes = new Product("cherry tomatoes", ProductUnit.Each);
+        catalog.addProduct(tomatoes, 0.69);
+        Product rice = new Product("rice", ProductUnit.Each);
+        catalog.addProduct(rice, 2.49);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(new Offer(SpecialOfferType.TenPercentDiscount, rice, 10));
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(rice, 1);
+
+        // ACT
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        // ASSERT
+        assertEquals(2.241, receipt.getTotalPrice(), 0.01);
+        assertEquals(Arrays.asList(new Discount(rice, "10.0% off", (-(catalog.getUnitPrice(rice) * 0.1)))), receipt.getDiscounts());
+        assertEquals(1, receipt.getItems().size());
+
+        ReceiptItem expectedItem1 = new ReceiptItem(rice, 1, 2.49);
 
         Assert.assertEquals(Arrays.asList(expectedItem1), receipt.getItems());
     }
