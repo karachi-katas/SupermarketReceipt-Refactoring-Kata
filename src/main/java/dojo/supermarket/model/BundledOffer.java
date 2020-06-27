@@ -11,5 +11,13 @@ public class BundledOffer extends Offer {
         this.products = products;
     }
 
-
+    @Override
+    Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
+        Product otherProduct = products.get(1);
+        if (shoppingCart.productQuantities.containsKey(otherProduct)) {
+            double discountPrice = (catalog.getUnitPrice(product)+catalog.getUnitPrice(otherProduct))*0.10;
+            return new Discount(product, "", -discountPrice);
+        }
+        return null;
+    }
 }

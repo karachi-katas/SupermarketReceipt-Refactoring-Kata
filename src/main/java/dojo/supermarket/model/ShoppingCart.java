@@ -34,21 +34,17 @@ public class ShoppingCart {
     }
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
-        for (Product p: productQuantities().keySet()) {
-            double quantity = productQuantities.get(p);
-            if (offers.containsKey(p)) {
-                Offer offer = offers.get(p);
-                double unitPrice = catalog.getUnitPrice(p);
+        for (Product product: productQuantities().keySet()) {
+            double quantity = productQuantities.get(product);
+            if (offers.containsKey(product)) {
+                Offer offer = offers.get(product);
+                double unitPrice = catalog.getUnitPrice(product);
                 int quantityAsInt = (int) quantity;
                 Discount discount = null;
                 int x = 1;
 
                 if (offer.offerType == SpecialOfferType.BundledDiscount) {
-                    Product otherProduct = ((BundledOffer) offer).products.get(1);
-                    if (productQuantities.containsKey(otherProduct)) {
-                        double discountPrice = (catalog.getUnitPrice(p)+catalog.getUnitPrice(otherProduct))*0.10;
-                        discount = new Discount(p, "", -discountPrice);
-                    }
+                    discount = offer.getDiscount(catalog, product, this);
                 }
                 else if (offer.offerType == SpecialOfferType.ThreeForTwo) {
                     x = 3;
@@ -58,7 +54,7 @@ public class ShoppingCart {
                     if (quantityAsInt >= 2) {
                         double total = offer.discountPercentageOrAmount * (quantityAsInt / x) + quantityAsInt % 2 * unitPrice;
                         double discountN = unitPrice * quantity - total;
-                        discount = new Discount(p, "2 for " + offer.discountPercentageOrAmount, -discountN);
+                        discount = new Discount(product, "2 for " + offer.discountPercentageOrAmount, -discountN);
                     }
 
                 } if (offer.offerType == SpecialOfferType.FiveForAmount) {
@@ -67,14 +63,14 @@ public class ShoppingCart {
                 int numberOfXs = quantityAsInt / x;
                 if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
                     double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
-                    discount = new Discount(p, "3 for 2", -discountAmount);
+                    discount = new Discount(product, "3 for 2", -discountAmount);
                 }
                 if (offer.offerType == SpecialOfferType.PercentDiscount) {
-                    discount = new Discount(p, offer.discountPercentageOrAmount + "% off", -quantity * unitPrice * offer.discountPercentageOrAmount / 100.0);
+                    discount = new Discount(product, offer.discountPercentageOrAmount + "% off", -quantity * unitPrice * offer.discountPercentageOrAmount / 100.0);
                 }
                 if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
                     double discountTotal = unitPrice * quantity - (offer.discountPercentageOrAmount * numberOfXs + quantityAsInt % 5 * unitPrice);
-                    discount = new Discount(p, x + " for " + offer.discountPercentageOrAmount, -discountTotal);
+                    discount = new Discount(product, x + " for " + offer.discountPercentageOrAmount, -discountTotal);
                 }
                 if (discount != null)
                     receipt.addDiscount(discount);
@@ -82,4 +78,5 @@ public class ShoppingCart {
 
         }
     }
+
 }
