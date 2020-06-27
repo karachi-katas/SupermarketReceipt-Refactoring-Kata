@@ -11,9 +11,14 @@ public class OfferBuilder {
     private List<Product> products = new ArrayList<>();
     private double discountPercentageOrAmount;
 
-    public OfferBuilder(SpecialOfferType offerType, Product product, double discountPercentageOrAmount) {
+    public OfferBuilder(SpecialOfferType offerType, Product product,
+            double discountPercentageOrAmount) {
         this.offerType = offerType;
         this.discountPercentageOrAmount = discountPercentageOrAmount;
+        this.products.add(product);
+    }
+
+    public OfferBuilder(Product product) {
         this.products.add(product);
     }
 
@@ -37,5 +42,9 @@ public class OfferBuilder {
                 return new FixedAmountOffer(products.get(0), discountPercentageOrAmount, 5);
         }
         throw new UnsupportedOperationException();
+    }
+
+    public Offer create(double discountAmount, int quantity) {
+        return new FixedAmountOffer(products.get(0), discountAmount, quantity);
     }
 }
