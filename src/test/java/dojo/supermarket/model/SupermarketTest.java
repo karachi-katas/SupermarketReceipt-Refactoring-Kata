@@ -74,4 +74,70 @@ public class SupermarketTest {
         assertEquals(2, receiptItem.getQuantity(), 0.01);
 
     }
+
+    @Test
+    public void shouldApplyFiveForAmountDiscountOnToothpasteInCart() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothpaste = new Product("toothpaste", ProductUnit.Each);
+        catalog.addProduct(toothpaste, 1.79);
+        Product apples = new Product("apples", ProductUnit.Kilo);
+        catalog.addProduct(apples, 1.99);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.FiveForAmount, toothpaste, 7.49);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(toothpaste, 15);
+
+        // ACT
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+        String result = new ReceiptPrinter().printReceipt(receipt);
+        System.out.println(result);
+
+        // ASSERT
+        assertEquals(22.47, receipt.getTotalPrice(), 0.01);
+        assertEquals(1, receipt.getDiscounts().size());
+        assertEquals(-4.38, receipt.getDiscounts().get(0).getDiscountAmount(),0.01);
+        assertEquals(toothpaste, receipt.getDiscounts().get(0).getProduct());
+        assertEquals(1, receipt.getItems().size());
+        ReceiptItem receiptItem = receipt.getItems().get(0);
+        assertEquals(toothpaste, receiptItem.getProduct());
+        assertEquals(1.79, receiptItem.getPrice(), 0.01);
+        assertEquals(15*1.79, receiptItem.getTotalPrice(), 0.01);
+        assertEquals(15, receiptItem.getQuantity(), 0.01);
+
+    }
+
+    @Test
+    public void shouldApplyTwoForAmountDiscountOnItemInCart() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothpaste = new Product("toothpaste", ProductUnit.Each);
+        catalog.addProduct(toothpaste, 0.69);
+        Product apples = new Product("apples", ProductUnit.Kilo);
+        catalog.addProduct(apples, 1.99);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, toothpaste, 0.99);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(toothpaste, 3);
+
+        // ACT
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+        String result = new ReceiptPrinter().printReceipt(receipt);
+        System.out.println(result);
+
+        // ASSERT
+        assertEquals(1.68, receipt.getTotalPrice(), 0.01);
+        assertEquals(1, receipt.getDiscounts().size());
+        assertEquals(-0.39, receipt.getDiscounts().get(0).getDiscountAmount(),0.01);
+        assertEquals(toothpaste, receipt.getDiscounts().get(0).getProduct());
+        assertEquals(1, receipt.getItems().size());
+        ReceiptItem receiptItem = receipt.getItems().get(0);
+        assertEquals(toothpaste, receiptItem.getProduct());
+        assertEquals(0.69, receiptItem.getPrice(), 0.01);
+        assertEquals(3*0.69, receiptItem.getTotalPrice(), 0.01);
+        assertEquals(3, receiptItem.getQuantity(), 0.01);
+
+    }
 }
