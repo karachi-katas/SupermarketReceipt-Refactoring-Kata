@@ -16,6 +16,33 @@ public class Offer {
     }
 
     Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
+        if (offerType == SpecialOfferType.TwoForAmount) {
+            if (shoppingCart.getQuantityAsInt(product) >= 2) {
+                double total = discountPercentageOrAmount * (shoppingCart.getQuantityAsInt(product) / 2) + shoppingCart
+                        .getQuantityAsInt(
+                        product) % 2 * catalog.getUnitPrice(product);
+                double discountN = catalog.getUnitPrice(product) * shoppingCart.getQuantity(product) - total;
+                return new Discount(product, "2 for " + discountPercentageOrAmount, -discountN);
+            }
+            return null;
+        }
+
+        if (offerType == SpecialOfferType.ThreeForTwo && shoppingCart.getQuantityAsInt(product) > 2) {
+            int numberOfXs = shoppingCart.getQuantityAsInt(product) / 3;
+            double discountAmount = shoppingCart.getQuantity(product) * catalog.getUnitPrice(product) - ((numberOfXs * 2 * catalog.getUnitPrice(product)) + shoppingCart
+                    .getQuantityAsInt(product) % 3 * catalog.getUnitPrice(product));
+            return new Discount(product, "3 for 2", -discountAmount);
+        }
+        if (offerType == SpecialOfferType.PercentDiscount) {
+            return new Discount(product, discountPercentageOrAmount + "% off", -shoppingCart
+                    .getQuantity(product) * catalog.getUnitPrice(product) * discountPercentageOrAmount / 100.0);
+        }
+        if (offerType == SpecialOfferType.FiveForAmount && shoppingCart.getQuantityAsInt(product) >= 5) {
+            int numberOfXs = shoppingCart.getQuantityAsInt(product) / 5;
+            double discountTotal = catalog.getUnitPrice(product) * shoppingCart.getQuantity(product) - (
+                    discountPercentageOrAmount * numberOfXs + shoppingCart.getQuantityAsInt(product) % 5 * catalog.getUnitPrice(product));
+            return new Discount(product, 5 + " for " + discountPercentageOrAmount, -discountTotal);
+        }
         return null;
     }
 }
