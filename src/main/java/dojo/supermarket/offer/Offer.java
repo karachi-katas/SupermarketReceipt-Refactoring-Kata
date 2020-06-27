@@ -7,11 +7,9 @@ import dojo.supermarket.model.SpecialOfferType;
 import dojo.supermarket.model.SupermarketCatalog;
 
 public abstract class Offer {
-    SpecialOfferType offerType;
     private final Product product;
 
-    public Offer(SpecialOfferType offerType, Product product) {
-        this.offerType = offerType;
+    public Offer(Product product) {
         this.product = product;
     }
 

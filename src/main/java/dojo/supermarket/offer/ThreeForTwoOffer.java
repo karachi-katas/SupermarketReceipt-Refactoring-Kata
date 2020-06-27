@@ -3,14 +3,12 @@ package dojo.supermarket.offer;
 import dojo.supermarket.model.Discount;
 import dojo.supermarket.model.Product;
 import dojo.supermarket.model.ShoppingCart;
-import dojo.supermarket.model.SpecialOfferType;
 import dojo.supermarket.model.SupermarketCatalog;
 
 public class ThreeForTwoOffer extends Offer {
 
-    public ThreeForTwoOffer(SpecialOfferType offerType, Product product,
-            double discountPercentageOrAmount) {
-        super(offerType, product);
+    public ThreeForTwoOffer(Product product) {
+        super(product);
     }
 
     @Override
