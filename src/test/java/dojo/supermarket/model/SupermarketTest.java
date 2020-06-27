@@ -88,4 +88,23 @@ public class SupermarketTest {
 
         assertEquals(1.99 * 0.9, receipt.getTotalPrice(), 0.01);
     }
+
+
+
+    @Test
+    public void fiveForAmountForToothpaste() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product toothpaste = new Product("toothpaste", ProductUnit.Each);
+        catalog.addProduct(toothpaste, 1.79);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.FiveForAmount, toothpaste, 7.49);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(toothpaste, 5);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        assertEquals(7.49, receipt.getTotalPrice(), 0.01);
+    }
 }
