@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 import dojo.supermarket.offer.Offer;
 import dojo.supermarket.offer.OfferBuilder;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.Test;
 
 public class SupermarketTest {
@@ -179,15 +181,13 @@ public class SupermarketTest {
 
         List<ReceiptItem> receiptItems = receipt.getItems();
 
-//        ReceiptItem receiptItem = receiptItems.get(0);
-//        assertEquals(receiptItem.getProduct().getName(), "cherryTomatoes");
-//        assertEquals(receiptItem.getTotalPrice(), 0.69 * 3, 0.01);
-//        assertEquals(receiptItem.getPrice(), 0.69, 0.01);
-//
-//        ReceiptItem receiptItemRice = receiptItems.get(1);
-//        assertEquals(receiptItemRice.getProduct().getName(), "rice");
-//        assertEquals(receiptItemRice.getTotalPrice(), 2.49, 0.01);
-//        assertEquals(receiptItemRice.getPrice(), 2.49, 0.01);
+        Set<ReceiptItem> receiptItemsExpected = new HashSet<>();
+        receiptItemsExpected.add(new ReceiptItem(cherryTomatoes, 3, 0.69, 0.69 * 3));
+        receiptItemsExpected.add(new ReceiptItem(rice, 1, 2.49, 2.49));
+
+        Set<ReceiptItem> receiptItemActual = new HashSet<>(receiptItems);
+
+        assertEquals(receiptItemsExpected, receiptItemActual);
 
         // TODO: check it out | order changes
 //        List<Discount> discounts = receipt.getDiscounts();
