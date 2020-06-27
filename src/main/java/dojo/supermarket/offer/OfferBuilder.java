@@ -29,6 +29,8 @@ public class OfferBuilder {
                 return new BundledOffer(offerType, products, discountPercentageOrAmount);
             case TwoForAmount:
                 return new TwoForAmountOffer(offerType, products.get(0), discountPercentageOrAmount);
+            case ThreeForTwo:
+                return new ThreeForTwoOffer(offerType, products.get(0), discountPercentageOrAmount);
         }
 
         assert products.size() == 1;
