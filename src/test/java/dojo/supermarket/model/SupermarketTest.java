@@ -36,6 +36,7 @@ public class SupermarketTest {
         assertEquals(2.5*1.99, receiptItem.getTotalPrice(), 0.01);
         assertEquals(2.5, receiptItem.getQuantity(), 0.01);
 
+        
     }
 
 
