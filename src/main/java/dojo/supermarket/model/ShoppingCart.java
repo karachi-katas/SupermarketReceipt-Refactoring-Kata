@@ -46,13 +46,7 @@ public class ShoppingCart {
             if (offers.containsKey(product)) {
                 Offer offer = offers.get(product);
 
-                Discount discount = null;
-                if (offer.offerType == SpecialOfferType.BundledDiscount) {
-                    discount = offer.getDiscount(catalog, product, this);
-
-                } else {
-                    discount = offer.getDiscount(catalog, product, this);
-                }
+                Discount discount = offer.getDiscount(catalog, product, this);
                 if (discount != null)
                     receipt.addDiscount(discount);
             }
