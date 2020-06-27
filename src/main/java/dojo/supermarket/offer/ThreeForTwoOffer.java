@@ -7,20 +7,25 @@ import dojo.supermarket.model.SupermarketCatalog;
 
 public class ThreeForTwoOffer extends Offer {
 
-    public ThreeForTwoOffer(Product product) {
+    int quantityPurchased;
+    int quantityInOffer;
+
+    public ThreeForTwoOffer(Product product, int quantityPurchased, int quantityInOffer) {
         super(product);
+        this.quantityPurchased = quantityPurchased;
+        this.quantityInOffer = quantityInOffer;
     }
 
     @Override
     public Discount getDiscount(SupermarketCatalog catalog, Product product, ShoppingCart shoppingCart) {
 
-        if (shoppingCart.getQuantityAsInt(product) > 2) {
-            int numberOfXs = shoppingCart.getQuantityAsInt(product) / 3;
+        if (shoppingCart.getQuantityAsInt(product) > quantityPurchased) {
+            int numberOfXs = shoppingCart.getQuantityAsInt(product) / quantityInOffer;
             double discountAmount =
                     shoppingCart.getQuantity(product) * catalog.getUnitPrice(product) - (
-                            (numberOfXs * 2 * catalog.getUnitPrice(product)) + shoppingCart
-                                    .getQuantityAsInt(product) % 3 * catalog.getUnitPrice(product));
-            return new Discount(product, "3 for 2", -discountAmount);
+                            (numberOfXs * quantityPurchased * catalog.getUnitPrice(product)) + shoppingCart
+                                    .getQuantityAsInt(product) % quantityInOffer * catalog.getUnitPrice(product));
+            return new Discount(product, quantityInOffer + " for " + quantityPurchased, -discountAmount);
         }
         return null;
     }

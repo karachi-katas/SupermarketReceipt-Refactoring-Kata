@@ -55,8 +55,8 @@ public class SupermarketTest {
         catalog.addProduct(toothbrush, 0.99);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(ThreeForTwo, toothbrush, 0.99)
-                .createOffer();
+        Offer offer = new OfferBuilder(toothbrush)
+                .create(2, 3);
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();

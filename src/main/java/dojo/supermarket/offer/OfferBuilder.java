@@ -22,15 +22,8 @@ public class OfferBuilder {
         this.products.add(product);
     }
 
-    public OfferBuilder addProduct(Product product) {
-        this.products.add(product);
-        return this;
-    }
-
     public Offer createOffer() {
         switch (offerType) {
-            case ThreeForTwo:
-                return new ThreeForTwoOffer(products.get(0));
             case PercentDiscount:
                 return new PercentDiscountOffer(products.get(0), discountPercentageOrAmount);
         }
@@ -43,5 +36,9 @@ public class OfferBuilder {
 
     public Offer create(Product bundledProduct, double discountPercentage) {
         return new BundledOffer(products.get(0), bundledProduct, discountPercentage);
+    }
+
+    public Offer create(int quantityPurchased, int quantityInOffer) {
+        return new ThreeForTwoOffer(products.get(0), quantityPurchased, quantityInOffer);
     }
 }
