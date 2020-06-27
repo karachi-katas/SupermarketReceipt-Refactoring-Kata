@@ -1,10 +1,5 @@
 package dojo.supermarket.model;
 
-import static dojo.supermarket.model.SpecialOfferType.BundledDiscount;
-import static dojo.supermarket.model.SpecialOfferType.FiveForAmount;
-import static dojo.supermarket.model.SpecialOfferType.PercentDiscount;
-import static dojo.supermarket.model.SpecialOfferType.ThreeForTwo;
-import static dojo.supermarket.model.SpecialOfferType.TwoForAmount;
 import static org.junit.Assert.assertEquals;
 
 import dojo.supermarket.offer.Offer;
@@ -26,13 +21,12 @@ public class SupermarketTest {
         catalog.addProduct(apples, 1.99);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(PercentDiscount, toothbrush, 10)
-                .createOffer();
+        Offer offer = new OfferBuilder(toothbrush).create(10);
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(apples, 2.5);
-        
+
         // ACT
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
@@ -43,7 +37,7 @@ public class SupermarketTest {
         ReceiptItem receiptItem = receipt.getItems().get(0);
         assertEquals(apples, receiptItem.getProduct());
         assertEquals(1.99, receiptItem.getPrice(), 0.01);
-        assertEquals(2.5*1.99, receiptItem.getTotalPrice(), 0.01);
+        assertEquals(2.5 * 1.99, receiptItem.getTotalPrice(), 0.01);
         assertEquals(2.5, receiptItem.getQuantity(), 0.01);
 
     }
@@ -93,8 +87,7 @@ public class SupermarketTest {
         catalog.addProduct(rice, 2.49);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(PercentDiscount, rice, 10)
-                .createOffer();
+        Offer offer = new OfferBuilder(rice).create(10);
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
@@ -112,8 +105,7 @@ public class SupermarketTest {
         catalog.addProduct(apple, 1.99);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(PercentDiscount, apple, 20)
-                .createOffer();
+        Offer offer = new OfferBuilder(apple).create(20);
         teller.addSpecialOffer(offer);
 
         ShoppingCart cart = new ShoppingCart();
@@ -174,8 +166,7 @@ public class SupermarketTest {
         Offer offer = new OfferBuilder(cherryTomatoes)
                 .create(0.99, 2);
         teller.addSpecialOffer(offer);
-        Offer otherOffer = new OfferBuilder(PercentDiscount, rice, 10)
-                .createOffer();
+        Offer otherOffer = new OfferBuilder(rice).create(10);
         teller.addSpecialOffer(otherOffer);
 
         ShoppingCart cart = new ShoppingCart();
@@ -212,7 +203,6 @@ public class SupermarketTest {
         Product toothpaste = new Product("toothpaste", ProductUnit.Each);
         catalog.addProduct(toothpaste, 1.79);
 
-
         Teller teller = new Teller(catalog);
         Offer offer = new OfferBuilder(toothbrush)
                 .create(toothpaste, 10);
@@ -222,8 +212,7 @@ public class SupermarketTest {
         cart.addItem(toothbrush);
         cart.addItem(toothpaste);
 
-
         Receipt receipt = teller.checksOutArticlesFrom(cart);
-        assertEquals((0.99+1.79)*0.9, receipt.getTotalPrice(), 0.01);
+        assertEquals((0.99 + 1.79) * 0.9, receipt.getTotalPrice(), 0.01);
     }
 }
