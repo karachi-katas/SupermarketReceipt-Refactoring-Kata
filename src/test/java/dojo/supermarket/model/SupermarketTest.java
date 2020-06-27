@@ -3,6 +3,7 @@ package dojo.supermarket.model;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
+import java.util.List;
 import org.junit.Test;
 
 public class SupermarketTest {
@@ -138,5 +139,41 @@ public class SupermarketTest {
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
         assertEquals(0.99, receipt.getTotalPrice(), 0.01);
+    }
+
+    @Test
+    public void fooo() {
+        SupermarketCatalog catalog = new FakeCatalog();
+        Product cherryTomatoes = new Product("cherryTomatoes", ProductUnit.Each);
+        catalog.addProduct(cherryTomatoes, 0.69);
+        Product rice = new Product("rice", ProductUnit.Kilo);
+        catalog.addProduct(rice, 2.49);
+
+        Teller teller = new Teller(catalog);
+        teller.addSpecialOffer(SpecialOfferType.TwoForAmount, cherryTomatoes, 0.99);
+        teller.addSpecialOffer(SpecialOfferType.PercentDiscount, rice, 10);
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItemQuantity(cherryTomatoes, 3);
+        cart.addItemQuantity(rice, 1);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+
+        assertEquals(0.99 + 0.69 + 2.49 * 0.9, receipt.getTotalPrice(), 0.01);
+
+        List<ReceiptItem> receiptItems = receipt.getItems();
+
+        ReceiptItem receiptItem = receiptItems.get(0);
+        assertEquals(receiptItem.getProduct().getName(), "cherryTomatoes");
+        assertEquals(receiptItem.getTotalPrice(), 0.69 * 3, 0.01);
+        assertEquals(receiptItem.getPrice(), 0.69, 0.01);
+
+        ReceiptItem receiptItemRice = receiptItems.get(1);
+        assertEquals(receiptItemRice.getProduct().getName(), "rice");
+        assertEquals(receiptItemRice.getTotalPrice(), 2.49, 0.01);
+        assertEquals(receiptItemRice.getPrice(), 2.49, 0.01);
+
+        List<Discount> discounts = receipt.getDiscounts();
+        assertEquals(discounts.get(0).getDiscountAmount(),  0.99 - 0.69 * 2, 0.01);
     }
 }
