@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import dojo.supermarket.offer.Offer;
 import dojo.supermarket.offer.OfferBuilder;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,11 +13,11 @@ import org.junit.Test;
 public class SupermarketTest {
 
     public static final Product TOOTHBRUSH = new Product("toothbrush", ProductUnit.Each);
-
     public static final Product TOOTHPASTE = new Product("toothpaste", ProductUnit.Each);
+    public static final Product APPLES = new Product("apples", ProductUnit.Kilo);
 
     Teller teller;
-    public static final Product APPLES = new Product("apples", ProductUnit.Kilo);
+    ShoppingCart cart;
 
     @Before
     public void setupTeller() {
@@ -28,14 +27,13 @@ public class SupermarketTest {
         catalog.addProduct(APPLES, 1.99);
 
         teller = new Teller(catalog);
+        cart = new ShoppingCart();
     }
 
     @Test
     public void noDiscountTest() {
         Offer offer = new OfferBuilder(TOOTHBRUSH).create(10);
         teller.addSpecialOffer(offer);
-
-        ShoppingCart cart = new ShoppingCart();
         cart.addItemQuantity(APPLES, 2.5);
 
         // ACT
@@ -49,17 +47,11 @@ public class SupermarketTest {
 
     @Test
     public void buyTwoToothBrushesAndGetOneFree() {
-        SupermarketCatalog catalog = new FakeCatalog();
-        Product toothbrush = new Product("toothbrush", ProductUnit.Each);
-        catalog.addProduct(toothbrush, 0.99);
-
-        Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(toothbrush)
+        Offer offer = new OfferBuilder(TOOTHBRUSH)
                 .create(2, 1);
         teller.addSpecialOffer(offer);
 
-        ShoppingCart cart = new ShoppingCart();
-        cart.addItemQuantity(toothbrush, 3);
+        cart.addItemQuantity(TOOTHBRUSH, 3);
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
@@ -68,17 +60,11 @@ public class SupermarketTest {
 
     @Test
     public void buyFiveToothBrushesAndGetTwoFree() {
-        SupermarketCatalog catalog = new FakeCatalog();
-        Product toothbrush = new Product("toothbrush", ProductUnit.Each);
-        catalog.addProduct(toothbrush, 0.99);
-
-        Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(toothbrush)
+        Offer offer = new OfferBuilder(TOOTHBRUSH)
                 .create(0.99, 2);
         teller.addSpecialOffer(offer);
 
-        ShoppingCart cart = new ShoppingCart();
-        cart.addItemQuantity(toothbrush, 5);
+        cart.addItemQuantity(TOOTHBRUSH, 5);
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
