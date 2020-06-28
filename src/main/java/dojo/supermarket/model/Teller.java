@@ -2,6 +2,7 @@ package dojo.supermarket.model;
 
 import dojo.supermarket.offer.Offer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +19,10 @@ public class Teller {
 
     public void addSpecialOffer(Offer offer) {
         offersList.add(offer);
+    }
+
+    public void addOffers(Offer... offer) {
+        offersList.addAll(Arrays.asList(offer));
     }
 
     public Receipt checksOutArticlesFrom(ShoppingCart theCart) {

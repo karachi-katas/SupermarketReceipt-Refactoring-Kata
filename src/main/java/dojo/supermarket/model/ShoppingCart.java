@@ -15,6 +15,12 @@ public class ShoppingCart {
         this.addItemQuantity(product, 1.0);
     }
 
+    void addItems(Product... products) {
+        for (Product product: products) {
+            this.addItemQuantity(product, 1.0);
+        }
+    }
+
     Map<Product, Double> productQuantities() {
         return productQuantities;
     }

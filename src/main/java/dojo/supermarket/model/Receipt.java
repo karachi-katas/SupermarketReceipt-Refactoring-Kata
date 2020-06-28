@@ -41,4 +41,28 @@ public class Receipt {
                 ", discounts=" + discounts +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Receipt receipt = (Receipt) o;
+
+        if (!items.equals(receipt.items)) {
+            return false;
+        }
+        return discounts.equals(receipt.discounts);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = items.hashCode();
+        result = 31 * result + discounts.hashCode();
+        return result;
+    }
 }
