@@ -2,11 +2,10 @@ package dojo.supermarket.model;
 
 import static org.junit.Assert.assertEquals;
 
-import dojo.supermarket.offer.Offer;
-import dojo.supermarket.offer.OfferBuilder;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import offer.OfferFixtures;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,35 +15,10 @@ public class SupermarketTest {
     public static final Product TOOTHPASTE = new Product("toothpaste", ProductUnit.Each);
     public static final Product APPLES = new Product("apples", ProductUnit.Kilo);
     public static final Product RICE = new Product("rice", ProductUnit.Kilo);
-
-    public static final Offer TEN_PERCENT_OFFER_ON_TOOTHBURSH = new OfferBuilder(TOOTHBRUSH)
-            .create(10);
-    public static final Offer BUY_2_GET_1_FREE_OFFER_ON_TOOTHBRUSH = new OfferBuilder(TOOTHBRUSH)
-            .create(2, 1);
-    public static final Offer BUY_2_FOR_FIXED_PRICE_OFFER_ON_TOOTHBRUSH = new OfferBuilder(
-            TOOTHBRUSH)
-            .create(0.99, 2);
-    public static final Offer TEN_PERCENT_DISCOUNT_ON_RICE = new OfferBuilder(RICE).create(10);
-    public static final Offer TWENTY_PERCENT_DISCOUNT_ON_APPLES = new OfferBuilder(APPLES)
-            .create(20);
-    public static final Offer FIVE_FOR_FIXED_PRICE_OFFER_ON_TOOTHPASTE = new OfferBuilder(
-            TOOTHPASTE)
-            .create(7.49, 5);
     public static final Product CHERRY_TOMATOES = new Product("cherryTomatoes", ProductUnit.Each);
-    public static final Offer TWO_FOR_DISCOUNTED_PRICE_ON_CHERRY_TOMATOES = new OfferBuilder(
-            CHERRY_TOMATOES)
-            .create(0.99, 2);
 
     Teller teller;
     ShoppingCart cart;
-    public static final Offer TWO_FOR_099_CHERRY_TOMATOES = new OfferBuilder(CHERRY_TOMATOES)
-            .create(0.99, 2);
-    public static final Offer TEN_PERCENT_OFF_ON_RICE = new OfferBuilder(RICE).create(10);
-    public static final Offer BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT = new OfferBuilder(
-            TOOTHBRUSH)
-            .create(TOOTHPASTE, 10);
-    public static final Offer TEN_PERCENT_OFF_ON_TOOTHPASTE = new OfferBuilder(TOOTHPASTE)
-            .create(10);
 
     @Before
     public void setupTeller() {
@@ -61,7 +35,7 @@ public class SupermarketTest {
 
     @Test
     public void noDiscountTest() {
-        teller.addSpecialOffer(TEN_PERCENT_OFFER_ON_TOOTHBURSH);
+        teller.addOffers(OfferFixtures.TEN_PERCENT_OFF_TOOTHBRUSH);
         cart.addItemQuantity(APPLES, 2.5);
 
         // ACT
@@ -75,7 +49,7 @@ public class SupermarketTest {
 
     @Test
     public void buyTwoToothBrushesAndGetOneFree() {
-        teller.addSpecialOffer(BUY_2_GET_1_FREE_OFFER_ON_TOOTHBRUSH);
+        teller.addOffers(OfferFixtures.BUY_2_GET_1_FREE_TOOTHBRUSH);
 
         cart.addItemQuantity(TOOTHBRUSH, 3);
 
@@ -86,7 +60,7 @@ public class SupermarketTest {
 
     @Test
     public void buyFiveToothBrushesAndGetTwoFree() {
-        teller.addSpecialOffer(BUY_2_FOR_FIXED_PRICE_OFFER_ON_TOOTHBRUSH);
+        teller.addOffers(OfferFixtures.TWO_FOR_099_TOOTHBRUSH);
 
         cart.addItemQuantity(TOOTHBRUSH, 5);
 
@@ -97,7 +71,7 @@ public class SupermarketTest {
 
     @Test
     public void tenPercentOnRice() {
-        teller.addSpecialOffer(TEN_PERCENT_DISCOUNT_ON_RICE);
+        teller.addOffers(OfferFixtures.TEN_PERCENT_OFF_RICE);
 
         cart.addItemQuantity(RICE, 1);
 
@@ -108,7 +82,7 @@ public class SupermarketTest {
 
     @Test
     public void twentyPercentOnApples() {
-        teller.addSpecialOffer(TWENTY_PERCENT_DISCOUNT_ON_APPLES);
+        teller.addOffers(OfferFixtures.TWENTY_PERCENT_OFF_APPLES);
 
         cart.addItemQuantity(APPLES, 1);
 
@@ -119,7 +93,7 @@ public class SupermarketTest {
 
     @Test
     public void fiveForAmountForToothpaste() {
-        teller.addSpecialOffer(FIVE_FOR_FIXED_PRICE_OFFER_ON_TOOTHPASTE);
+        teller.addOffers(OfferFixtures.FIVE_FOR_749_TOOTHPASTE);
 
         cart.addItemQuantity(TOOTHPASTE, 5);
 
@@ -130,7 +104,7 @@ public class SupermarketTest {
 
     @Test
     public void twoBoxesOfCherryTomatoesForDiscountedPrice() {
-        teller.addSpecialOffer(TWO_FOR_DISCOUNTED_PRICE_ON_CHERRY_TOMATOES);
+        teller.addOffers(OfferFixtures.TWO_FOR_099_CHERRY_TOMATOES);
 
         cart.addItemQuantity(CHERRY_TOMATOES, 2);
 
@@ -142,8 +116,7 @@ public class SupermarketTest {
     @Test
     public void multipleDiscounts() {
 
-        teller.addSpecialOffer(TWO_FOR_099_CHERRY_TOMATOES);
-        teller.addSpecialOffer(TEN_PERCENT_OFF_ON_RICE);
+        teller.addOffers(OfferFixtures.TWO_FOR_099_CHERRY_TOMATOES, OfferFixtures.TEN_PERCENT_OFF_RICE);
 
         cart.addItemQuantity(CHERRY_TOMATOES, 3);
         cart.addItemQuantity(RICE, 1);
@@ -172,10 +145,9 @@ public class SupermarketTest {
 
     @Test
     public void bundledDiscount() {
-        teller.addSpecialOffer(BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT);
+        teller.addOffers(OfferFixtures.BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT);
 
-        cart.addItem(TOOTHBRUSH);
-        cart.addItem(TOOTHPASTE);
+        cart.addItems(TOOTHBRUSH, TOOTHPASTE);
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
         assertEquals((0.99 + 1.79) * 0.9, receipt.getTotalPrice(), 0.01);
@@ -184,8 +156,8 @@ public class SupermarketTest {
     @Test
     public void bundledDiscountShouldApplyFirst() {
         teller.addOffers(
-                BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT,
-                TEN_PERCENT_OFF_ON_TOOTHPASTE);
+                OfferFixtures.BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT,
+                OfferFixtures.TEN_PERCENT_OFF_TOOTHPASTE);
 
         cart.addItems(TOOTHBRUSH, TOOTHPASTE);
 

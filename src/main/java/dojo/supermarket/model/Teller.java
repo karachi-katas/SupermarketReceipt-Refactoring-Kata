@@ -17,10 +17,6 @@ public class Teller {
         this.catalog = catalog;
     }
 
-    public void addSpecialOffer(Offer offer) {
-        offersList.add(offer);
-    }
-
     public void addOffers(Offer... offer) {
         offersList.addAll(Arrays.asList(offer));
     }
