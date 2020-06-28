@@ -17,14 +17,6 @@ public class ShoppingCart {
         }
     }
 
-    Map<Product, Double> productQuantities() {
-        return productQuantities;
-    }
-
-    public Map<Product, Double> getProductQuantities() {
-        return productQuantities;
-    }
-
     public void addItemQuantity(Product product, double quantity) {
         if (productQuantities.containsKey(product)) {
             productQuantities.put(product, productQuantities.get(product) + quantity);
@@ -32,6 +24,10 @@ public class ShoppingCart {
             productQuantities.put(product, quantity);
             isOfferApplied.put(product, false);
         }
+    }
+
+    public Map<Product, Double> getProductQuantities() {
+        return productQuantities;
     }
 
     public double getQuantity(Product product) {
@@ -49,7 +45,7 @@ public class ShoppingCart {
     void handleOffers(Receipt receipt, SupermarketCatalog catalog,
             List<Offer> offerList) {
 
-        for (Product product : productQuantities().keySet()) {
+        for (Product product : productQuantities.keySet()) {
             if (isProductAvailableForOffer(product)) {
 
                 for (Offer offer : offerList) {
