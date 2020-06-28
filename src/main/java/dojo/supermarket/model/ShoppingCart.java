@@ -11,10 +11,6 @@ public class ShoppingCart {
     Map<Product, Double> productQuantities = new LinkedHashMap<>();
     Map<Product, Boolean> isOfferApplied = new HashMap<>();
 
-    void addItem(Product product) {
-        this.addItemQuantity(product, 1.0);
-    }
-
     void addItems(Product... products) {
         for (Product product: products) {
             this.addItemQuantity(product, 1.0);
