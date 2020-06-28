@@ -15,6 +15,14 @@ public class SupermarketTest {
     public static final Product TOOTHBRUSH = new Product("toothbrush", ProductUnit.Each);
     public static final Product TOOTHPASTE = new Product("toothpaste", ProductUnit.Each);
     public static final Product APPLES = new Product("apples", ProductUnit.Kilo);
+    public static final Product RICE = new Product("rice", ProductUnit.Kilo);
+
+    public static final Offer TEN_PERCENT_OFFER_ON_TOOTHBURSH = new OfferBuilder(TOOTHBRUSH).create(10);
+    public static final Offer BUY_2_GET_1_FREE_OFFER_ON_TOOTHBRUSH = new OfferBuilder(TOOTHBRUSH)
+            .create(2, 1);
+    public static final Offer BUY_2_FOR_FIXED_PRICE_OFFER_ON_TOOTHBRUSH = new OfferBuilder(TOOTHBRUSH)
+            .create(0.99, 2);
+    public static final Offer TEN_PERCENT_DISCOUNT_ON_RICE = new OfferBuilder(RICE).create(10);
 
     Teller teller;
     ShoppingCart cart;
@@ -25,6 +33,7 @@ public class SupermarketTest {
         catalog.addProduct(TOOTHBRUSH, 0.99);
         catalog.addProduct(TOOTHPASTE, 1.79);
         catalog.addProduct(APPLES, 1.99);
+        catalog.addProduct(RICE, 2.49);
 
         teller = new Teller(catalog);
         cart = new ShoppingCart();
@@ -32,8 +41,7 @@ public class SupermarketTest {
 
     @Test
     public void noDiscountTest() {
-        Offer offer = new OfferBuilder(TOOTHBRUSH).create(10);
-        teller.addSpecialOffer(offer);
+        teller.addSpecialOffer(TEN_PERCENT_OFFER_ON_TOOTHBURSH);
         cart.addItemQuantity(APPLES, 2.5);
 
         // ACT
@@ -47,9 +55,7 @@ public class SupermarketTest {
 
     @Test
     public void buyTwoToothBrushesAndGetOneFree() {
-        Offer offer = new OfferBuilder(TOOTHBRUSH)
-                .create(2, 1);
-        teller.addSpecialOffer(offer);
+        teller.addSpecialOffer(BUY_2_GET_1_FREE_OFFER_ON_TOOTHBRUSH);
 
         cart.addItemQuantity(TOOTHBRUSH, 3);
 
@@ -60,9 +66,7 @@ public class SupermarketTest {
 
     @Test
     public void buyFiveToothBrushesAndGetTwoFree() {
-        Offer offer = new OfferBuilder(TOOTHBRUSH)
-                .create(0.99, 2);
-        teller.addSpecialOffer(offer);
+        teller.addSpecialOffer(BUY_2_FOR_FIXED_PRICE_OFFER_ON_TOOTHBRUSH);
 
         cart.addItemQuantity(TOOTHBRUSH, 5);
 
@@ -73,16 +77,10 @@ public class SupermarketTest {
 
     @Test
     public void tenPercentOnRice() {
-        SupermarketCatalog catalog = new FakeCatalog();
-        Product rice = new Product("rice", ProductUnit.Kilo);
-        catalog.addProduct(rice, 2.49);
-
-        Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(rice).create(10);
-        teller.addSpecialOffer(offer);
+        teller.addSpecialOffer(TEN_PERCENT_DISCOUNT_ON_RICE);
 
         ShoppingCart cart = new ShoppingCart();
-        cart.addItemQuantity(rice, 1);
+        cart.addItemQuantity(RICE, 1);
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
 
