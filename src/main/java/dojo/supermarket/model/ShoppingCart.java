@@ -1,6 +1,5 @@
 package dojo.supermarket.model;
 
-import dojo.supermarket.offer.BundledOffer;
 import dojo.supermarket.offer.Offer;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -51,7 +50,7 @@ public class ShoppingCart {
         for (Product product : productQuantities().keySet()) {
             if (isProductAvailableForOffer(product)) {
 
-                for (Offer offer: offerList) {
+                for (Offer offer : offerList) {
                     if (offer.applicableOn(product)) {
                         Discount discount = offer.getDiscount(catalog, product, this);
                         if (discount != null) {

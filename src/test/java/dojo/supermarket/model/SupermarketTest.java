@@ -165,8 +165,7 @@ public class SupermarketTest {
         catalog.addProduct(rice, 2.49);
 
         Teller teller = new Teller(catalog);
-        Offer offer = new OfferBuilder(cherryTomatoes)
-                .create(0.99, 2);
+        Offer offer = new OfferBuilder(cherryTomatoes).create(0.99, 2);
         teller.addSpecialOffer(offer);
         Offer otherOffer = new OfferBuilder(rice).create(10);
         teller.addSpecialOffer(otherOffer);
@@ -189,10 +188,12 @@ public class SupermarketTest {
 
         assertEquals(receiptItemsExpected, receiptItemActual);
 
-        // TODO: check it out | order changes
-//        List<Discount> discounts = receipt.getDiscounts();
-//        assertEquals(discounts.get(0).getProduct().getName(), "cherryTomatoes");
-//        assertEquals(discounts.get(0).getDiscountAmount(),  0.99 - 0.69 * 2, 0.01);
+        Set<Discount> discountsExpected = new HashSet<>();
+        discountsExpected.add(new Discount(cherryTomatoes, "2 for 0.99", 0.99 - 0.69 * 2));
+        discountsExpected.add(new Discount(rice, "10.0% off", -2.49 * 0.1));
+
+        Set<Discount> discountsActual = new HashSet<>(receipt.getDiscounts());
+        assertEquals(discountsExpected, discountsActual);
     }
 
     @Test
@@ -217,7 +218,7 @@ public class SupermarketTest {
     }
 
     @Test
-    public void bundledDiscountfooo() {
+    public void bundledDiscountShouldApplyFirst() {
         SupermarketCatalog catalog = new FakeCatalog();
         Product toothbrush = new Product("toothbrush", ProductUnit.Each);
         catalog.addProduct(toothbrush, 0.99);
