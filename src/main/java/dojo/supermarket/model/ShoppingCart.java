@@ -73,4 +73,14 @@ public class ShoppingCart {
     public void setProductAvailedForOffer(Product product) {
         isOfferApplied.put(product, true);
     }
+
+    void addProductsToReceipt(Receipt receipt,
+            SupermarketCatalog catalog) {
+        for (Product product : productQuantities.keySet()) {
+            double quantity = getQuantity(product);
+            double unitPrice = catalog.getUnitPrice(product);
+            double price = quantity * unitPrice;
+            receipt.addProduct(product, quantity, unitPrice, price);
+        }
+    }
 }
