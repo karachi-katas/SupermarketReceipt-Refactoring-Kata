@@ -1,18 +1,21 @@
 package dojo.supermarket.model;
 
+import java.util.List;
+
 public class Offer {
-    SpecialOfferType offerType;
-    private final Product product;
-    double argument;
+    private List<Product> products;
+    private DiscountBuilder discountBuilder;
 
-    public Offer(SpecialOfferType offerType, Product product, double argument) {
-        this.offerType = offerType;
-        this.argument = argument;
-        this.product = product;
+    public Offer(List<Product> products, DiscountBuilder discountBuilder) {
+        this.products = products;
+        this.discountBuilder = discountBuilder;
     }
 
-    Product getProduct() {
-        return this.product;
+    public List<Product> getProducts() {
+        return products;
     }
 
+    public DiscountBuilder getDiscountBuilder() {
+        return discountBuilder;
+    }
 }

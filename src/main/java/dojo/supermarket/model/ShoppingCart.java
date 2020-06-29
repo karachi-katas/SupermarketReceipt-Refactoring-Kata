@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ShoppingCart {
 
     private final List<ProductQuantity> items = new ArrayList<>();
     Map<Product, Double> productQuantities = new HashMap<>();
-
 
     List<ProductQuantity> getItems() {
         return new ArrayList<>(items);
@@ -23,7 +24,6 @@ public class ShoppingCart {
         return productQuantities;
     }
 
-
     public void addItemQuantity(Product product, double quantity) {
         items.add(new ProductQuantity(product, quantity));
         if (productQuantities.containsKey(product)) {
@@ -33,45 +33,52 @@ public class ShoppingCart {
         }
     }
 
-    void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
-        for (Product p: productQuantities().keySet()) {
-            double quantity = productQuantities.get(p);
-            if (offers.containsKey(p)) {
-                Offer offer = offers.get(p);
-                double unitPrice = catalog.getUnitPrice(p);
-                int quantityAsInt = (int) quantity;
-                Discount discount = null;
-                int x = 1;
-                if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    x = 3;
+    void handleOffers(Receipt receipt, List<Offer> offers, SupermarketCatalog catalog) {
+        OfferHandler offerHandler = new OfferHandler(receipt, catalog);
+        for (Offer offer : offers) {
+            offerHandler.handle(offer);
+        }
+    }
 
-                } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
-                    x = 2;
-                    if (quantityAsInt >= 2) {
-                        double total = offer.argument * (quantityAsInt / x) + quantityAsInt % 2 * unitPrice;
-                        double discountN = unitPrice * quantity - total;
-                        discount = new Discount(p, "2 for " + offer.argument, -discountN);
+    class OfferHandler {
+        private Map<Product, Double> quantityLeft;
+        private Receipt receipt;
+        private SupermarketCatalog catalog;
+
+        public OfferHandler(Receipt receipt, SupermarketCatalog catalog) {
+            this.quantityLeft = productQuantities.keySet().stream().collect(Collectors.toMap(Function.identity(), product -> productQuantities.get(product)));
+            this.receipt = receipt;
+            this.catalog = catalog;
+        }
+
+        private double getApplicableQuantity(Offer offer) {
+            int found = 0;
+            double minCount = -1;
+            for (Product product : quantityLeft.keySet()) {
+                if (offer.getProducts().contains(product)) {
+                    ++found;
+                    if (minCount == -1 || minCount > quantityLeft.get(product)) {
+                        minCount = quantityLeft.get(product);
                     }
-
-                } if (offer.offerType == SpecialOfferType.FiveForAmount) {
-                    x = 5;
+                    if (found == offer.getProducts().size()) {
+                        break;
+                    }
                 }
-                int numberOfXs = quantityAsInt / x;
-                if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
-                    double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
-                    discount = new Discount(p, "3 for 2", -discountAmount);
-                }
-                if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
-                    discount = new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
-                }
-                if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
-                    discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
-                }
-                if (discount != null)
-                    receipt.addDiscount(discount);
             }
 
+            return found == offer.getProducts().size() ? minCount : 0;
+        }
+
+        void handle(Offer offer) {
+            double applicableQuantity = getApplicableQuantity(offer);
+            if (applicableQuantity > 0) {
+                for (Product product : offer.getProducts()) {
+                    double unitPrice = catalog.getUnitPrice(product);
+                    quantityLeft.put(product, quantityLeft.get(product) - applicableQuantity);
+                    offer.getDiscountBuilder().buildFor(product, unitPrice, applicableQuantity)
+                        .ifPresent(receipt::addDiscount);
+                }
+            }
         }
     }
 }
