@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -51,34 +52,20 @@ public class ShoppingCart {
             this.catalog = catalog;
         }
 
-        private double getApplicableQuantity(Offer offer) {
-            int found = 0;
-            double minCount = -1;
-            for (Product product : quantityLeft.keySet()) {
-                if (offer.getProducts().contains(product)) {
-                    ++found;
-                    if (minCount == -1 || minCount > quantityLeft.get(product)) {
-                        minCount = quantityLeft.get(product);
-                    }
-                    if (found == offer.getProducts().size()) {
-                        break;
-                    }
-                }
-            }
-
-            return found == offer.getProducts().size() ? minCount : 0;
-        }
-
         void handle(Offer offer) {
-            double applicableQuantity = getApplicableQuantity(offer);
-            if (applicableQuantity > 0) {
-                for (Product product : offer.getProducts()) {
+            Optional<List<ProductQuantity>> applicableProductQuantities
+                = offer.getApplicableProductQuantities(quantityLeft);
+
+            applicableProductQuantities.ifPresent(productQuantities -> {
+                for (ProductQuantity productQuantity : productQuantities) {
+                    Product product = productQuantity.getProduct();
+                    Double applicableQuantity = productQuantity.getQuantity();
                     double unitPrice = catalog.getUnitPrice(product);
                     quantityLeft.put(product, quantityLeft.get(product) - applicableQuantity);
                     offer.getDiscountBuilder().buildFor(product, unitPrice, applicableQuantity)
                         .ifPresent(receipt::addDiscount);
                 }
-            }
+            });
         }
     }
 }
