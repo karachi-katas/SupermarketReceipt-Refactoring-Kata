@@ -1,5 +1,6 @@
 package dojo.supermarket.model;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class Offer {
         return discountBuilder;
     }
 
-    Optional<List<ProductQuantity>> getApplicableProductQuantities(Map<Product, Double> productQuantities) {
+    List<ProductQuantity> getApplicableProductQuantities(Map<Product, Double> productQuantities) {
         int countOfProductsMatchingOfferProduccts = 0;
         double applicableQuantity = -1;
         for (Product product : productQuantities.keySet()) {
@@ -39,10 +40,10 @@ public class Offer {
         }
 
         if (countOfProductsMatchingOfferProduccts == this.products.size() && applicableQuantity > 0) {
-            return Optional.of(createProductQuantitiesMap(applicableQuantity));
+            return createProductQuantitiesMap(applicableQuantity);
         }
 
-        return Optional.empty();
+        return Collections.emptyList();
     }
 
     private List<ProductQuantity> createProductQuantitiesMap(double quantity) {

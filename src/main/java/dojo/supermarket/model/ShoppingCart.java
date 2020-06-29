@@ -53,19 +53,17 @@ public class ShoppingCart {
         }
 
         void handle(Offer offer) {
-            Optional<List<ProductQuantity>> applicableProductQuantities
+            List<ProductQuantity> applicableProductQuantities
                 = offer.getApplicableProductQuantities(quantityLeft);
 
-            applicableProductQuantities.ifPresent(productQuantities -> {
-                for (ProductQuantity productQuantity : productQuantities) {
-                    Product product = productQuantity.getProduct();
-                    Double applicableQuantity = productQuantity.getQuantity();
-                    double unitPrice = catalog.getUnitPrice(product);
-                    quantityLeft.put(product, quantityLeft.get(product) - applicableQuantity);
-                    offer.getDiscountBuilder().buildFor(product, unitPrice, applicableQuantity)
-                        .ifPresent(receipt::addDiscount);
-                }
-            });
+            for (ProductQuantity productQuantity : applicableProductQuantities) {
+                Product product = productQuantity.getProduct();
+                Double applicableQuantity = productQuantity.getQuantity();
+                double unitPrice = catalog.getUnitPrice(product);
+                quantityLeft.put(product, quantityLeft.get(product) - applicableQuantity);
+                offer.getDiscountBuilder().buildFor(product, unitPrice, applicableQuantity)
+                    .ifPresent(receipt::addDiscount);
+            }
         }
     }
 }
