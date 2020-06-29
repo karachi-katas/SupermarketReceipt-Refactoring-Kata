@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Discount {
     private final String description;
-    private final Double discountAmount;
+    private final double discountAmount;
     private final Product product;
 
     public Discount(Product product, String description, double discountAmount) {
