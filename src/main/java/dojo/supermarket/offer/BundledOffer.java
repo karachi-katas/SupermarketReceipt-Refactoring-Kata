@@ -12,10 +12,7 @@ public class BundledOffer extends Offer {
 
     List<Product> bundledProducts;
 
-
     double discountPercentage;
-
-    // set of products
 
     public BundledOffer(Product product, Product bundledProduct,
             double discountPercentage) {

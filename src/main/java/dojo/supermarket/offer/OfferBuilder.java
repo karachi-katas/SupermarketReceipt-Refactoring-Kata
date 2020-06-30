@@ -1,6 +1,8 @@
 package dojo.supermarket.offer;
 
+import dojo.supermarket.model.BundleOfferWithNoBundledProducts;
 import dojo.supermarket.model.Product;
+import java.util.Collections;
 import java.util.List;
 
 public class OfferBuilder {
@@ -19,7 +21,10 @@ public class OfferBuilder {
         return new BundledOffer(product, bundledProduct, discountPercentage);
     }
 
-    public Offer create(List<Product> bundledProducts, double discountPercentage) {
+    public Offer create(List<Product> bundledProducts, double discountPercentage) throws BundleOfferWithNoBundledProducts {
+        if (bundledProducts.isEmpty()) {
+            throw new BundleOfferWithNoBundledProducts();
+        }
         return new BundledOffer(product, bundledProducts, discountPercentage);
     }
 

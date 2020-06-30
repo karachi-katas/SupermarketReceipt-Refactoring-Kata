@@ -3,6 +3,9 @@ package dojo.supermarket.model;
 import static org.junit.Assert.assertEquals;
 
 import dojo.supermarket.offer.BuyXGetYFree;
+import dojo.supermarket.offer.Offer;
+import dojo.supermarket.offer.OfferBuilder;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -186,5 +189,10 @@ public class SupermarketTest {
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
         assertEquals((0.99 + 1.79 + 2.49) * 0.9, receipt.getTotalPrice(), 0.01);
+    }
+
+    @Test(expected = BundleOfferWithNoBundledProducts.class)
+    public void bundledDiscountWithZeroProducts() throws BundleOfferWithNoBundledProducts{
+        new OfferBuilder(TOOTHBRUSH).create(Collections.emptyList(), 10.0);
     }
 }
