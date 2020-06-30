@@ -2,6 +2,7 @@ package dojo.supermarket.model;
 
 import static org.junit.Assert.assertEquals;
 
+import dojo.supermarket.offer.BuyXGetYFree;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -153,15 +154,27 @@ public class SupermarketTest {
         assertEquals((0.99 + 1.79) * 0.9, receipt.getTotalPrice(), 0.01);
     }
 
+//    @Test
+//    public void bundledDiscountShouldApplyFirst() {
+//        teller.addOffers(
+//                OfferFixtures.BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT,
+//                OfferFixtures.TEN_PERCENT_OFF_TOOTHPASTE);
+//
+//        cart.addItems(TOOTHBRUSH, TOOTHPASTE);
+//
+//        Receipt receipt = teller.checksOutArticlesFrom(cart);
+//        assertEquals((0.99 + 1.79) * 0.9, receipt.getTotalPrice(), 0.01);
+//    }
+
     @Test
-    public void bundledDiscountShouldApplyFirst() {
+    public void bundledDiscountAppliesTwice() {
         teller.addOffers(
                 OfferFixtures.BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT,
                 OfferFixtures.TEN_PERCENT_OFF_TOOTHPASTE);
 
-        cart.addItems(TOOTHBRUSH, TOOTHPASTE);
+        cart.addItems(TOOTHBRUSH, TOOTHPASTE, TOOTHBRUSH, TOOTHPASTE);
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
-        assertEquals((0.99 + 1.79) * 0.9, receipt.getTotalPrice(), 0.01);
+        assertEquals((0.99 + 1.79) * 0.9 * 2, receipt.getTotalPrice(), 0.01);
     }
 }

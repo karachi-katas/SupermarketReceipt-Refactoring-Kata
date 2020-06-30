@@ -1,7 +1,6 @@
 package dojo.supermarket.model;
 
 import dojo.supermarket.offer.Offer;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +8,9 @@ import java.util.Map;
 public class ShoppingCart {
 
     Map<Product, Double> productQuantities = new LinkedHashMap<>();
-    Map<Product, Boolean> isOfferApplied = new HashMap<>();
 
     void addItems(Product... products) {
-        for (Product product: products) {
+        for (Product product : products) {
             this.addItemQuantity(product, 1.0);
         }
     }
@@ -22,7 +20,6 @@ public class ShoppingCart {
             productQuantities.put(product, productQuantities.get(product) + quantity);
         } else {
             productQuantities.put(product, quantity);
-            isOfferApplied.put(product, false);
         }
     }
 
@@ -38,32 +35,26 @@ public class ShoppingCart {
         return productQuantities.get(product).intValue();
     }
 
-    public boolean isProductAvailableForOffer(Product product) {
-        return !isOfferApplied.get(product);
-    }
-
     void handleOffers(Receipt receipt, SupermarketCatalog catalog,
             List<Offer> offerList) {
 
         for (Product product : productQuantities.keySet()) {
-            if (isProductAvailableForOffer(product)) {
+            Offer offer = getOfferFor(product, offerList);
 
-                for (Offer offer : offerList) {
-                    if (offer.applicableOn(product)) {
-                        Discount discount = offer.getDiscount(catalog, product, this);
-                        if (discount != null) {
-                            receipt.addDiscount(discount);
-                            setProductAvailedForOffer(product);
-                        }
-                        break;
-                    }
-                }
+            Discount discount = offer.getDiscount(catalog, product, this);
+            if (discount != null) {
+                receipt.addDiscount(discount);
             }
         }
     }
 
-    public void setProductAvailedForOffer(Product product) {
-        isOfferApplied.put(product, true);
+    private Offer getOfferFor(Product product, List<Offer> offers) {
+        for (Offer offer : offers) {
+            if (offer.applicableOn(product)) {
+                return offer;
+            }
+        }
+        return Offer.NONE;
     }
 
     void addProductsToReceipt(Receipt receipt,

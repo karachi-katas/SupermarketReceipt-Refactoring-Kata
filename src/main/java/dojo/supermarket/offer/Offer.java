@@ -6,6 +6,9 @@ import dojo.supermarket.model.ShoppingCart;
 import dojo.supermarket.model.SupermarketCatalog;
 
 public abstract class Offer {
+
+    public static final Offer NONE = new NoOffer(null);
+
     private final Product product;
 
     public Offer(Product product) {
