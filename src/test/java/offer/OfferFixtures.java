@@ -1,9 +1,12 @@
 package offer;
 
+import dojo.supermarket.model.Product;
 import dojo.supermarket.model.SupermarketTest;
 import dojo.supermarket.offer.Offer;
 import dojo.supermarket.offer.OfferBuilder;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OfferFixtures {
 
@@ -34,4 +37,11 @@ public class OfferFixtures {
     public static final Offer BUNDLE_TOOTHBRUSH_AND_PASTE_AND_RICE_WITH_10_PERCENT_DISCOUNT = new OfferBuilder(
             SupermarketTest.TOOTHBRUSH)
             .create(Arrays.asList(SupermarketTest.TOOTHPASTE, SupermarketTest.RICE), 10);
+
+    private static Map bundledProducts = new HashMap<Product, Integer>() {{
+        put(SupermarketTest.TOOTHPASTE, 2);
+    }};
+    public static final Offer BUNDLE_TOOTHBRUSH_AND_TWO_PASTE_WITH_10_PERCENT_DISCOUNT = new OfferBuilder(
+            SupermarketTest.TOOTHBRUSH)
+            .create(bundledProducts, 10);
 }

@@ -4,6 +4,7 @@ import dojo.supermarket.model.BundleOfferWithNoBundledProducts;
 import dojo.supermarket.model.Product;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class OfferBuilder {
 
@@ -22,6 +23,13 @@ public class OfferBuilder {
     }
 
     public Offer create(List<Product> bundledProducts, double discountPercentage) throws BundleOfferWithNoBundledProducts {
+        if (bundledProducts.isEmpty()) {
+            throw new BundleOfferWithNoBundledProducts();
+        }
+        return new BundledOffer(product, bundledProducts, discountPercentage);
+    }
+
+    public Offer create(Map<Product, Integer> bundledProducts, double discountPercentage) throws BundleOfferWithNoBundledProducts {
         if (bundledProducts.isEmpty()) {
             throw new BundleOfferWithNoBundledProducts();
         }

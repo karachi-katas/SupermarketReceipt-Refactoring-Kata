@@ -195,4 +195,26 @@ public class SupermarketTest {
     public void bundledDiscountWithZeroProducts() throws BundleOfferWithNoBundledProducts{
         new OfferBuilder(TOOTHBRUSH).create(Collections.emptyList(), 10.0);
     }
+
+    @Test
+    public void bundledDiscountAppliesOnceWithExtraProduct() {
+        teller.addOffers(
+                OfferFixtures.BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT);
+
+        cart.addItems(TOOTHBRUSH, TOOTHPASTE, TOOTHPASTE);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+        assertEquals((0.99 + 1.79) * 0.9 + 1.79, receipt.getTotalPrice(), 0.01);
+    }
+
+    @Test
+    public void bundledDiscountWithOneToothbrushAndTwoPastes() {
+        teller.addOffers(
+                OfferFixtures.BUNDLE_TOOTHBRUSH_AND_TWO_PASTE_WITH_10_PERCENT_DISCOUNT);
+
+        cart.addItems(TOOTHBRUSH, TOOTHPASTE, TOOTHPASTE, TOOTHPASTE);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+        assertEquals((0.99 + 1.79 * 2) * 0.9 + 1.79, receipt.getTotalPrice(), 0.01);
+    }
 }
