@@ -169,12 +169,22 @@ public class SupermarketTest {
     @Test
     public void bundledDiscountAppliesTwice() {
         teller.addOffers(
-                OfferFixtures.BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT,
-                OfferFixtures.TEN_PERCENT_OFF_TOOTHPASTE);
+                OfferFixtures.BUNDLE_TOOTHBRUSH_AND_PASTE_WITH_10_PERCENT_DISCOUNT);
 
         cart.addItems(TOOTHBRUSH, TOOTHPASTE, TOOTHBRUSH, TOOTHPASTE);
 
         Receipt receipt = teller.checksOutArticlesFrom(cart);
         assertEquals((0.99 + 1.79) * 0.9 * 2, receipt.getTotalPrice(), 0.01);
+    }
+
+    @Test
+    public void bundledDiscountWithMoreThanTwoProducts() {
+        teller.addOffers(
+                OfferFixtures.BUNDLE_TOOTHBRUSH_AND_PASTE_AND_RICE_WITH_10_PERCENT_DISCOUNT);
+
+        cart.addItems(TOOTHBRUSH, TOOTHPASTE, RICE);
+
+        Receipt receipt = teller.checksOutArticlesFrom(cart);
+        assertEquals((0.99 + 1.79 + 2.49) * 0.9, receipt.getTotalPrice(), 0.01);
     }
 }

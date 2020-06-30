@@ -1,6 +1,7 @@
 package dojo.supermarket.offer;
 
 import dojo.supermarket.model.Product;
+import java.util.List;
 
 public class OfferBuilder {
 
@@ -16,6 +17,10 @@ public class OfferBuilder {
 
     public Offer create(Product bundledProduct, double discountPercentage) {
         return new BundledOffer(product, bundledProduct, discountPercentage);
+    }
+
+    public Offer create(List<Product> bundledProducts, double discountPercentage) {
+        return new BundledOffer(product, bundledProducts, discountPercentage);
     }
 
     public Offer create(int quantity, int free) {
