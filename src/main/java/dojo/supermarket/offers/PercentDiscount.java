@@ -3,6 +3,7 @@ package dojo.supermarket.offers;
 import dojo.supermarket.model.Discount;
 import dojo.supermarket.model.Offer;
 import dojo.supermarket.model.Product;
+import dojo.supermarket.model.SpecialOfferType;
 
 public class PercentDiscount implements ShoppingCartOffer {
     @Override
@@ -10,5 +11,10 @@ public class PercentDiscount implements ShoppingCartOffer {
         Discount discount;
         return new Discount(p, offer.argument + "% off",
                 -quantity * unitPrice * offer.argument / 100.0);
+    }
+
+    @Override
+    public boolean isApplicable(SpecialOfferType offerType, int quantityAsInt) {
+        return offerType == SpecialOfferType.PercentDiscount;
     }
 }
