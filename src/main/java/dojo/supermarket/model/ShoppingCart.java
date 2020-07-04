@@ -2,6 +2,10 @@ package dojo.supermarket.model;
 
 import dojo.supermarket.discount.Discount;
 import dojo.supermarket.discount.DiscountCalculator;
+import dojo.supermarket.discount.FiveForAmount;
+import dojo.supermarket.discount.TenPercent;
+import dojo.supermarket.discount.ThreeForTwo;
+import dojo.supermarket.discount.TwoForAmount;
 import dojo.supermarket.type.SpecialOfferType;
 
 import java.util.ArrayList;
@@ -44,29 +48,24 @@ public class ShoppingCart {
 
                 Offer offer = offers.get(p);
 
-                double unitPrice = catalog.getUnitPrice(p);
                 int quantityAsInt = (int) quantity;
 
-                int quantityAdjustment = offer.getQuantityAdjustment();
-
-                int numberOfXs = quantityAsInt / quantityAdjustment;
-
                 if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
-
                     DiscountCalculator discountThreeForTwo = new ThreeForTwo();
                     return discountThreeForTwo.calculateDiscount(offer,catalog,p,quantity);
                 }
                 if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
-                    return new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
+                    DiscountCalculator tenPercent = new TenPercent();
+                    return tenPercent.calculateDiscount(offer,catalog,p,quantity);
                 }
+
                 if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
-                    return new Discount(p, quantityAdjustment + " for " + offer.argument, -discountTotal);
+                    DiscountCalculator fiveForAmount = new FiveForAmount();
+                    return fiveForAmount.calculateDiscount(offer,catalog,p,quantity);
                 }
                 if (offer.offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
-                    double total = offer.argument * (quantityAsInt / quantityAdjustment) + quantityAsInt % 2 * unitPrice;
-                    double discountN = unitPrice * quantity - total;
-                    return new Discount(p, "2 for " + offer.argument, -discountN);
+                    DiscountCalculator twoForAmount = new TwoForAmount();
+                    return twoForAmount.calculateDiscount(offer,catalog,p,quantity);
                 }
 
             }
