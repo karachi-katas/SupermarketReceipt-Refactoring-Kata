@@ -19,9 +19,9 @@ public class Teller {
         this.offers.put(product, new Offer(offerType, product, argument));
     }
 
-    public Receipt checksOutArticlesFrom(ShoppingCart theCart) {
+    public Receipt checksOutArticlesFrom(ShoppingCart cart) {
         Receipt receipt = new Receipt();
-        List<ProductQuantity> productQuantities = theCart.getItems();
+        List<ProductQuantity> productQuantities = cart.getItems();
         for (ProductQuantity pq: productQuantities) {
             Product p = pq.getProduct();
             double quantity = pq.getQuantity();
@@ -29,7 +29,7 @@ public class Teller {
             double price = quantity * unitPrice;
             receipt.addProduct(p, quantity, unitPrice, price);
         }
-        Discount discount = theCart.GetCartDiscount(this.offers, this.catalog);
+        Discount discount = cart.getCartDiscount(this.offers, this.catalog);
         if(discount != null)
             receipt.addDiscount(discount);
 

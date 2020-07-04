@@ -13,6 +13,7 @@ public class ShoppingCart {
     Map<Product, Double> productQuantities = new HashMap<>();
 
 
+
     List<ProductQuantity> getItems() {
         return new ArrayList<>(items);
     }
@@ -25,7 +26,6 @@ public class ShoppingCart {
         return productQuantities;
     }
 
-
     public void addItemQuantity(Product product, double quantity) {
         items.add(new ProductQuantity(product, quantity));
         if (productQuantities.containsKey(product)) {
@@ -35,7 +35,7 @@ public class ShoppingCart {
         }
     }
 
-    public Discount GetCartDiscount(Map<Product, Offer> offers, SupermarketCatalog catalog) {
+    public Discount getCartDiscount(Map<Product, Offer> offers, SupermarketCatalog catalog) {
         Discount discount = null;
         for (Product p : productQuantities().keySet()) {
             double quantity = productQuantities.get(p);
@@ -43,23 +43,11 @@ public class ShoppingCart {
                 Offer offer = offers.get(p);
                 double unitPrice = catalog.getUnitPrice(p);
                 int quantityAsInt = (int) quantity;
-                int quantityAdjustment = 1;
-                if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    quantityAdjustment = 3;
 
-                } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
-                    quantityAdjustment = 2;
-                    if (quantityAsInt >= 2) {
-                        double total = offer.argument * (quantityAsInt / quantityAdjustment) + quantityAsInt % 2 * unitPrice;
-                        double discountN = unitPrice * quantity - total;
-                        discount = new Discount(p, "2 for " + offer.argument, -discountN);
-                    }
+                int quantityAdjustment = getQuantityAdjustment(offer);
 
-                }
-                if (offer.offerType == SpecialOfferType.FiveForAmount) {
-                    quantityAdjustment = 5;
-                }
                 int numberOfXs = quantityAsInt / quantityAdjustment;
+
                 if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
                     double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
                     discount = new Discount(p, "3 for 2", -discountAmount);
@@ -72,11 +60,29 @@ public class ShoppingCart {
                     discount = new Discount(p, quantityAdjustment + " for " + offer.argument, -discountTotal);
                 }
 
+                if (offer.offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
+                    double total = offer.argument * (quantityAsInt / quantityAdjustment) + quantityAsInt % 2 * unitPrice;
+                    double discountN = unitPrice * quantity - total;
+                    discount = new Discount(p, "2 for " + offer.argument, -discountN);
+                }
 
             }
         }
         return discount;
 
+    }
+
+    private static int getQuantityAdjustment(Offer offer) {
+        if (offer.offerType == SpecialOfferType.TwoForAmount) {
+            return 2;
+        }
+        if (offer.offerType == SpecialOfferType.ThreeForTwo) {
+            return 3;
+        }
+        if (offer.offerType == SpecialOfferType.FiveForAmount) {
+            return 5;
+        }
+        return 1;
     }
 }
 
