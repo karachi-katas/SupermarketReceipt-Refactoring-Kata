@@ -10,7 +10,6 @@ public class ShoppingCart {
     private final List<ProductQuantity> items = new ArrayList<>();
     Map<Product, Double> productQuantities = new HashMap<>();
 
-
     List<ProductQuantity> getItems() {
         return new ArrayList<>(items);
     }
@@ -26,13 +25,16 @@ public class ShoppingCart {
     }
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
-        for (Product p: productQuantities.keySet()) {
-            double quantity = productQuantities.get(p);
-            if (offers.containsKey(p)) {
-                Offer offer = offers.get(p);
-                offer.applyDiscount(receipt, catalog, quantity);
-            }
+        for (Product product: productQuantities.keySet()) {
+            applyDiscount(receipt, offers, catalog, product);
+        }
+    }
 
+    private void applyDiscount(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog, Product product) {
+        double quantity = productQuantities.get(product);
+        if (offers.containsKey(product)) {
+            Offer offer = offers.get(product);
+            offer.applyDiscount(receipt, catalog, quantity);
         }
     }
 
