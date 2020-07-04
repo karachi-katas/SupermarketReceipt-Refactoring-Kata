@@ -1,5 +1,7 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.discount.Discount;
+
 import java.util.ArrayList;
 import java.util.List;
 

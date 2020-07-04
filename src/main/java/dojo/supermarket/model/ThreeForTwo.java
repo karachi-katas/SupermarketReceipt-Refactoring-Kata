@@ -1,6 +1,9 @@
 package dojo.supermarket.model;
 
-public class ThreeForTwo implements DiscountCalculator{
+import dojo.supermarket.discount.Discount;
+import dojo.supermarket.discount.DiscountCalculator;
+
+public class ThreeForTwo implements DiscountCalculator {
     @Override
     public Discount calculateDiscount(Offer offer, SupermarketCatalog catalog, Product product , double quantity) {
 

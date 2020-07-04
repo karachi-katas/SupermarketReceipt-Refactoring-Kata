@@ -1,5 +1,7 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.discount.Discount;
+import dojo.supermarket.discount.DiscountCalculator;
 import dojo.supermarket.type.SpecialOfferType;
 
 import java.util.ArrayList;
@@ -39,7 +41,9 @@ public class ShoppingCart {
         for (Product p : productQuantities().keySet()) {
             double quantity = productQuantities.get(p);
             if (offers.containsKey(p)) {
+
                 Offer offer = offers.get(p);
+
                 double unitPrice = catalog.getUnitPrice(p);
                 int quantityAsInt = (int) quantity;
 
@@ -59,7 +63,6 @@ public class ShoppingCart {
                     double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
                     return new Discount(p, quantityAdjustment + " for " + offer.argument, -discountTotal);
                 }
-
                 if (offer.offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
                     double total = offer.argument * (quantityAsInt / quantityAdjustment) + quantityAsInt % 2 * unitPrice;
                     double discountN = unitPrice * quantity - total;
@@ -71,7 +74,5 @@ public class ShoppingCart {
         return discount;
 
     }
-
-
 }
 

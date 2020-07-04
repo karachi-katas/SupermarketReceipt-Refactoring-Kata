@@ -1,5 +1,6 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.discount.Discount;
 import dojo.supermarket.type.SpecialOfferType;
 
 import java.util.HashMap;

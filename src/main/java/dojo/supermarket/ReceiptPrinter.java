@@ -1,5 +1,6 @@
 package dojo.supermarket;
 
+import dojo.supermarket.discount.Discount;
 import dojo.supermarket.model.*;
 import dojo.supermarket.type.ProductUnit;
 
