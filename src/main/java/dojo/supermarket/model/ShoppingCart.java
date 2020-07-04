@@ -47,10 +47,10 @@ public class ShoppingCart {
 
                 int numberOfXs = quantityAsInt / quantityAdjustment;
 
-
                 if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
-                    double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
-                    return new Discount(p, "3 for 2", -discountAmount);
+
+                    DiscountCalculator discountThreeForTwo = new ThreeForTwo();
+                    return discountThreeForTwo.calculateDiscount(offer,catalog,p,quantity);
                 }
                 if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
                     return new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
