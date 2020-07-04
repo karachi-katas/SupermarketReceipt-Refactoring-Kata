@@ -1,5 +1,7 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.offers.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,18 +44,23 @@ public class ShoppingCart {
                 int quantityAsInt = (int) quantity;
                 Discount discount = null;
 
-                if (offer.offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
-                    discount = getDiscountForTwoForAmount(p, quantity, offer, unitPrice);
-                }
-                if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
-                    discount = getDiscountThreeForTwo(p, quantity,offer, unitPrice);
-                }
-                if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    discount = getDiscountForFiveForAmount(p, quantity, offer, unitPrice);
-                }
-                if (offer.offerType == SpecialOfferType.PercentDiscount) {
-                    discount = getDiscountTenPercentDiscount(p, quantity, offer, unitPrice);
-                }
+
+                ShoppingCartOffer shoppingCartOffer = getOfferTypeAndDiscount(offer.offerType, quantityAsInt);
+                if (shoppingCartOffer != null)
+                    discount = shoppingCartOffer.getDiscount(p, quantity, offer, unitPrice);
+
+//                if (offer.offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
+//                    discount = new TwoForAmountOffer().getDiscount(p, quantity, offer, unitPrice);
+//                }
+//                if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
+//                    discount = new ThreeForTwo().getDiscount(p, quantity,offer, unitPrice);
+//                }
+//                if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
+//                    discount = new FiveForAmount().getDiscount(p, quantity, offer, unitPrice);
+//                }
+//                if (offer.offerType == SpecialOfferType.PercentDiscount) {
+//                    discount = new PercentDiscount().getDiscount(p, quantity, offer, unitPrice);
+//                }
 
                 if (discount != null) {
                     receipt.addDiscount(discount);
@@ -61,6 +68,25 @@ public class ShoppingCart {
             }
 
         }
+    }
+
+    private ShoppingCartOffer getOfferTypeAndDiscount(SpecialOfferType offerType, int quantityAsInt) {
+
+        if (offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
+            return new TwoForAmountOffer();
+        }
+        if (offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
+            return  new ThreeForTwo();
+        }
+        if (offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
+            return new FiveForAmount();
+        }
+        if (offerType == SpecialOfferType.PercentDiscount) {
+            return new PercentDiscount();
+        }
+
+        return null;
+
     }
 
     private Discount getDiscountForFiveForAmount(Product p, double quantity, Offer offer,
