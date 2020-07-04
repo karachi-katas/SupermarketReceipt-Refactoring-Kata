@@ -41,16 +41,13 @@ public class ShoppingCart {
                 Offer offer = offers.get(p);
                 double unitPrice = catalog.getUnitPrice(p);
 
-                int quantityAsInt = (int) quantity;
-                int offerTypeValue = offer.getOfferTypeValue();
-
                 Discount discount = null;
                 if (offer.offerType == SpecialOfferType.TwoForAmount || offer.offerType == SpecialOfferType.FiveForAmount) {
-                    discount = getDiscountForXForAmount(p, quantity, offer, unitPrice, quantityAsInt, offerTypeValue);
+                    discount = getDiscountForXForAmount(p, quantity, offer, unitPrice);
                 }
 
                 if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    discount = getDiscountForXForY(p, quantity, unitPrice, quantityAsInt, offer);
+                    discount = getDiscountForXForY(p, quantity, offer, unitPrice);
                 }
 
                 if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
@@ -67,7 +64,8 @@ public class ShoppingCart {
         return new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
     }
 
-    private Discount getDiscountForXForY(Product p, double quantity, double unitPrice, int quantityAsInt, Offer offer) {
+    private Discount getDiscountForXForY(Product p, double quantity, Offer offer, double unitPrice) {
+        int quantityAsInt = (int) quantity;
         int offerTypeValue = offer.getOfferTypeValue();
         if (quantityAsInt < offerTypeValue) return null;
 
@@ -75,8 +73,11 @@ public class ShoppingCart {
         return new Discount(p, offerTypeValue + " for 2", -discount);
     }
 
-    private Discount getDiscountForXForAmount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt, int offerTypeValue) {
+    private Discount getDiscountForXForAmount(Product p, double quantity, Offer offer, double unitPrice) {
+        int quantityAsInt = (int) quantity;
+        int offerTypeValue = offer.getOfferTypeValue();
         if (quantityAsInt < offerTypeValue) return null;
+        
         double discount = (unitPrice * quantity) - (offer.argument * (quantityAsInt / offerTypeValue) + quantityAsInt % offerTypeValue * unitPrice);
         return new Discount(p, offerTypeValue + " for " + offer.argument, -discount);
     }
