@@ -1,6 +1,8 @@
 package dojo.supermarket.model;
 
 import dojo.supermarket.ReceiptPrinter;
+import dojo.supermarket.type.ProductUnit;
+import dojo.supermarket.type.SpecialOfferType;
 import org.approvaltests.Approvals;
 import org.junit.Before;
 import org.junit.Test;

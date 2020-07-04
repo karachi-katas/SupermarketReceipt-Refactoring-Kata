@@ -1,5 +1,7 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.type.SpecialOfferType;
+
 public class Offer {
     SpecialOfferType offerType;
     private final Product product;

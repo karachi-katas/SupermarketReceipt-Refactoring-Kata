@@ -1,5 +1,7 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.type.ProductUnit;
+
 import java.util.Objects;
 
 public class Product {

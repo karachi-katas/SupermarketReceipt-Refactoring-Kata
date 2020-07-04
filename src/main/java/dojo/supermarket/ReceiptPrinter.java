@@ -1,6 +1,7 @@
 package dojo.supermarket;
 
 import dojo.supermarket.model.*;
+import dojo.supermarket.type.ProductUnit;
 
 import java.util.Locale;
 
