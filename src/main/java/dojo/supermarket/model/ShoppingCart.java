@@ -51,9 +51,7 @@ public class ShoppingCart {
                 } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
                     x = 2;
                     if (quantityAsInt >= 2) {
-                        double total = offer.argument * (quantityAsInt / x) + quantityAsInt % 2 * unitPrice;
-                        double discountN = unitPrice * quantity - total;
-                        discount = new Discount(p, "2 for " + offer.argument, -discountN);
+                        discount = getDiscountForXForAmount(p, quantity, offer, unitPrice, quantityAsInt, x);
                     }
 
                 } if (offer.offerType == SpecialOfferType.FiveForAmount) {
@@ -68,13 +66,24 @@ public class ShoppingCart {
                     discount = new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
                 }
                 if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
-                    discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
+                    discount = getDiscountForXForAmount(p, quantity, offer, unitPrice, quantityAsInt, x);
                 }
                 if (discount != null)
                     receipt.addDiscount(discount);
             }
 
         }
+    }
+
+    private Discount getDiscountForXForAmount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt, int x) {
+        Discount discount;
+        double discountTotal = getDiscountTotalForXForAmount(quantity, offer, unitPrice, quantityAsInt, x);
+        discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
+        return discount;
+    }
+
+    private double getDiscountTotalForXForAmount(double quantity, Offer offer, double unitPrice, int quantityAsInt, int x) {
+        double total = offer.argument * (quantityAsInt / x) + quantityAsInt % x * unitPrice;
+        return unitPrice * quantity - total;
     }
 }
