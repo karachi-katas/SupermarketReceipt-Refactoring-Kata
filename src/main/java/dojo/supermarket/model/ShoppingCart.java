@@ -26,12 +26,15 @@ public class ShoppingCart {
 
     public void addItemQuantity(Product product, double quantity) {
         items.add(new ProductQuantity(product, quantity));
-        if (productQuantities.containsKey(product)) {
-            productQuantities.put(product, productQuantities.get(product) + quantity);
-        } else {
-            productQuantities.put(product, quantity);
-        }
+        double previousQuantity = isExistingProduct(product)? productQuantities.get(product): 0;
+
+        productQuantities.put(product, previousQuantity + quantity);
     }
+
+    private boolean isExistingProduct(Product product) {
+        return productQuantities.containsKey(product);
+    }
+
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
         for (Product p: productQuantities().keySet()) {
