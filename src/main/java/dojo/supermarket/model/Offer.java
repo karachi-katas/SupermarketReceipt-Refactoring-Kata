@@ -10,10 +10,23 @@ public class Offer {
     private final Product product;
     protected double argument;
 
-    public Offer(SpecialOfferType offerType, Product product, double argument) {
+    protected Offer(SpecialOfferType offerType, Product product, double argument) {
         this.offerType = offerType;
         this.argument = argument;
         this.product = product;
+    }
+
+    public static Offer createOffer(SpecialOfferType offerType, Product product, double argument) {
+        if (offerType == SpecialOfferType.TenPercentDiscount) {
+            return new TenPercentDiscount(product, argument);
+        } else if (offerType == SpecialOfferType.ThreeForTwo) {
+            return new ThreeForTwo(product, argument);
+        } else if (offerType == SpecialOfferType.TwoForAmount) {
+            return new TwoForAmount(product, argument);
+        } else if (offerType == SpecialOfferType.FiveForAmount) {
+            return new FiveForAmount(product, argument);
+        }
+        throw new UnsupportedOperationException();
     }
 
     Product getProduct() {
