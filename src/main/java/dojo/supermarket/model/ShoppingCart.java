@@ -46,12 +46,7 @@ public class ShoppingCart {
                     x = 3;
 
                 } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
-                    x = 2;
-                    if (quantityAsInt >= 2) {
-                        double total = offer.argument * (quantityAsInt / x) + quantityAsInt % 2 * unitPrice;
-                        double discountN = unitPrice * quantity - total;
-                        discount = new Discount(p, "2 for " + offer.argument, -discountN);
-                    }
+                    discount = getDiscountForTwoForAmount(p, quantity, offer, unitPrice, quantityAsInt, discount);
 
                 } if (offer.offerType == SpecialOfferType.FiveForAmount) {
                     x = 5;
@@ -73,5 +68,14 @@ public class ShoppingCart {
             }
 
         }
+    }
+
+    private Discount getDiscountForTwoForAmount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt, Discount discount) {
+        if (quantityAsInt >= 2) {
+            double total = offer.argument * (quantityAsInt / 2) + quantityAsInt % 2 * unitPrice;
+            double discountN = unitPrice * quantity - total;
+            discount = new Discount(p, "2 for " + offer.argument, -discountN);
+        }
+        return discount;
     }
 }
