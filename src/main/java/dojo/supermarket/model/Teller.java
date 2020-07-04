@@ -1,7 +1,6 @@
 package dojo.supermarket.model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Teller {
@@ -19,15 +18,8 @@ public class Teller {
 
     public Receipt checksOutArticlesFrom(ShoppingCart theCart) {
         Receipt receipt = new Receipt();
-        List<ProductQuantity> productQuantities = theCart.getItems();
-        for (ProductQuantity pq: productQuantities) {
-            Product p = pq.getProduct();
-            double quantity = pq.getQuantity();
-            double unitPrice = this.catalog.getUnitPrice(p);
-            receipt.addProduct(p, quantity, unitPrice);
-        }
+        theCart.handleProducts(receipt, this.catalog);
         theCart.handleOffers(receipt, this.offers, this.catalog);
-
         return receipt;
     }
 

@@ -10,10 +10,6 @@ public class ShoppingCart {
     private final List<ProductQuantity> items = new ArrayList<>();
     Map<Product, Double> productQuantities = new HashMap<>();
 
-    List<ProductQuantity> getItems() {
-        return new ArrayList<>(items);
-    }
-
     void addItem(Product product) {
         this.addItemQuantity(product, 1.0);
     }
@@ -38,4 +34,12 @@ public class ShoppingCart {
         }
     }
 
+    void handleProducts(Receipt receipt, SupermarketCatalog catalog) {
+        for (ProductQuantity pq : items) {
+            Product p = pq.getProduct();
+            double quantity = pq.getQuantity();
+            double unitPrice = catalog.getUnitPrice(p);
+            receipt.addProduct(p, quantity, unitPrice);
+        }
+    }
 }
