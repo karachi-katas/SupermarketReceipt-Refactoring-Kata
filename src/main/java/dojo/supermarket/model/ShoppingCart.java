@@ -44,19 +44,13 @@ public class ShoppingCart {
                 double unitPrice = catalog.getUnitPrice(p);
                 int quantityAsInt = (int) quantity;
                 Discount discount = null;
-                int x = 1;
-                if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    x = 3;
 
-                } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
-                    x = 2;
-                    if (quantityAsInt >= 2) {
-                        discount = getDiscountForXForAmount(p, quantity, offer, unitPrice, quantityAsInt, x);
-                    }
+                int x = offer.offerType.value;
 
-                } if (offer.offerType == SpecialOfferType.FiveForAmount) {
-                    x = 5;
+                if (offer.offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
+                    discount = getDiscountForXForAmount(p, quantity, offer, unitPrice, quantityAsInt, x);
                 }
+
                 int numberOfXs = quantityAsInt / x;
                 if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
                     double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
