@@ -29,7 +29,9 @@ public class Teller {
             double price = quantity * unitPrice;
             receipt.addProduct(p, quantity, unitPrice, price);
         }
-        theCart.handleOffers(receipt, this.offers, this.catalog);
+        Discount discount = theCart.GetCartDiscount(this.offers, this.catalog);
+        if(discount != null)
+            receipt.addDiscount(discount);
 
         return receipt;
     }
