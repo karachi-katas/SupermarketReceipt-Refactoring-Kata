@@ -13,6 +13,19 @@ public class Offer {
         this.product = product;
     }
 
+    public int getQuantityAdjustment() {
+        if (offerType == SpecialOfferType.TwoForAmount) {
+            return 2;
+        }
+        if (offerType == SpecialOfferType.ThreeForTwo) {
+            return 3;
+        }
+        if (offerType == SpecialOfferType.FiveForAmount) {
+            return 5;
+        }
+        return 1;
+    }
+
     Product getProduct() {
         return this.product;
     }

@@ -13,7 +13,6 @@ public class ShoppingCart {
     Map<Product, Double> productQuantities = new HashMap<>();
 
 
-
     List<ProductQuantity> getItems() {
         return new ArrayList<>(items);
     }
@@ -44,7 +43,7 @@ public class ShoppingCart {
                 double unitPrice = catalog.getUnitPrice(p);
                 int quantityAsInt = (int) quantity;
 
-                int quantityAdjustment = getQuantityAdjustment(offer);
+                int quantityAdjustment = offer.getQuantityAdjustment();
 
                 int numberOfXs = quantityAsInt / quantityAdjustment;
 
@@ -72,17 +71,6 @@ public class ShoppingCart {
 
     }
 
-    private static int getQuantityAdjustment(Offer offer) {
-        if (offer.offerType == SpecialOfferType.TwoForAmount) {
-            return 2;
-        }
-        if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-            return 3;
-        }
-        if (offer.offerType == SpecialOfferType.FiveForAmount) {
-            return 5;
-        }
-        return 1;
-    }
+
 }
 
