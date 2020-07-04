@@ -66,20 +66,21 @@ public class ShoppingCart {
 
     private Discount getDiscountForXForY(Product p, double quantity, Offer offer, double unitPrice) {
         int quantityAsInt = (int) quantity;
-        int offerTypeValue = offer.getOfferTypeValue();
-        if (quantityAsInt < offerTypeValue) return null;
+        int offerSourceQuantity = offer.getOfferSourceQuantity();
+        int offerTargetQuantity = offer.getOfferTargetQuantity();
+        if (quantityAsInt < offerSourceQuantity) return null;
 
-        double discount = quantity * unitPrice - (((quantityAsInt / offerTypeValue) * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
-        return new Discount(p, offerTypeValue + " for 2", -discount);
+        double discount = quantity * unitPrice - (((quantityAsInt / offerSourceQuantity) * offerTargetQuantity * unitPrice) + quantityAsInt % offerSourceQuantity * unitPrice);
+        return new Discount(p, offerSourceQuantity + " for " + offerTargetQuantity, -discount);
     }
 
     private Discount getDiscountForXForAmount(Product p, double quantity, Offer offer, double unitPrice) {
         int quantityAsInt = (int) quantity;
-        int offerTypeValue = offer.getOfferTypeValue();
-        if (quantityAsInt < offerTypeValue) return null;
+        int offerSourceQuantity = offer.getOfferSourceQuantity();
+        if (quantityAsInt < offerSourceQuantity) return null;
         
-        double discount = (unitPrice * quantity) - (offer.argument * (quantityAsInt / offerTypeValue) + quantityAsInt % offerTypeValue * unitPrice);
-        return new Discount(p, offerTypeValue + " for " + offer.argument, -discount);
+        double discount = (unitPrice * quantity) - (offer.argument * (quantityAsInt / offerSourceQuantity) + quantityAsInt % offerSourceQuantity * unitPrice);
+        return new Discount(p, offerSourceQuantity + " for " + offer.argument, -discount);
     }
 
 

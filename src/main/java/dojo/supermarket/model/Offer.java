@@ -15,8 +15,12 @@ public class Offer {
         return this.product;
     }
 
-    public int getOfferTypeValue() {
-        return this.offerType.value;
+    public int getOfferSourceQuantity() {
+        return this.offerType.sourceQuantity;
+    }
+
+    public int getOfferTargetQuantity() {
+        return this.offerType.targetQuantity;
     }
 
 }
