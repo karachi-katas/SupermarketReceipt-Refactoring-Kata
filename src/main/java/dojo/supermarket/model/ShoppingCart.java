@@ -19,10 +19,6 @@ public class ShoppingCart {
         this.addItemQuantity(product, 1.0);
     }
 
-    Map<Product, Double> productQuantities() {
-        return productQuantities;
-    }
-
     public void addItemQuantity(Product product, double quantity) {
         items.add(new ProductQuantity(product, quantity));
         Double oldQuantity = productQuantities.getOrDefault(product, 0.0);
@@ -30,7 +26,7 @@ public class ShoppingCart {
     }
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
-        for (Product p: productQuantities().keySet()) {
+        for (Product p: productQuantities.keySet()) {
             double quantity = productQuantities.get(p);
             if (offers.containsKey(p)) {
                 Offer offer = offers.get(p);
