@@ -20,7 +20,7 @@ public class OfferFactory {
         return offerTypes.stream()
                 .filter(shoppingCartOffer->shoppingCartOffer.isApplicable(offerType,quantityAsInt))
                 .findFirst()
-                .orElse(null);
+                .orElse(new NoDiscount());
     }
 
 }
