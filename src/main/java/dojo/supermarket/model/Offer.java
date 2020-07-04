@@ -15,4 +15,8 @@ public class Offer {
         return this.product;
     }
 
+    public int getOfferTypeValue() {
+        return this.offerType.value;
+    }
+
 }
