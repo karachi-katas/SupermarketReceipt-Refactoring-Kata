@@ -2,6 +2,7 @@ package dojo.supermarket.model;
 
 import dojo.supermarket.offer.TenPercentDiscount;
 import dojo.supermarket.offer.ThreeForTwo;
+import dojo.supermarket.offer.TwoForAmount;
 
 public class Offer {
     SpecialOfferType offerType;
@@ -28,15 +29,10 @@ public class Offer {
             discount = new TenPercentDiscount(this.product, this.argument).getDiscount(product, quantity, unitPrice);
         } else if (offerType == SpecialOfferType.ThreeForTwo) {
             discount = new ThreeForTwo(this.product, this.argument).getDiscount(product, quantity, unitPrice);
+        } else if (offerType == SpecialOfferType.TwoForAmount) {
+            discount = new TwoForAmount(this.product, this.argument).getDiscount(product, quantity, unitPrice);
         }
         else {
-            if (offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2) {
-                int x = 2;
-                int numberOfXs = quantityAsInt / x;
-                double total = argument * numberOfXs + quantityAsInt % 2 * unitPrice;
-                double discountN = unitPrice * quantity - total;
-                discount = new Discount(product, "2 for " + argument, -discountN);
-            }
             if (offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
                 int x = 5;
                 int numberOfXs = quantityAsInt / x;
