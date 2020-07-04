@@ -42,24 +42,21 @@ public class ShoppingCart {
                 int quantityAsInt = (int) quantity;
                 Discount discount = null;
                 int x = 1;
-                if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    x = 3;
-
-                } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
+                  if (offer.offerType == SpecialOfferType.TwoForAmount) {
                     discount = getDiscountForTwoForAmount(p, quantity, offer, unitPrice, quantityAsInt, discount);
 
-                } if (offer.offerType == SpecialOfferType.FiveForAmount) {
-                    x = 5;
                 }
-                int numberOfXs = quantityAsInt / x;
                 if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
+                    int numberOfXs = quantityAsInt / 3;
+
                     discount = getDiscountThreeForTwo(p, quantity, unitPrice, quantityAsInt, numberOfXs);
                 }
                 if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
                     discount = getDiscountTenPercentDiscount(p, quantity, offer, unitPrice);
                 }
                 if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    discount = getDiscountForFiveForAmount(p, quantity, offer, unitPrice, quantityAsInt, x, numberOfXs);
+                    int numberOfXs = quantityAsInt / 5;
+                    discount = getDiscountForFiveForAmount(p, quantity, offer, unitPrice, quantityAsInt, numberOfXs);
                 }
                 if (discount != null)
                     receipt.addDiscount(discount);
@@ -68,10 +65,10 @@ public class ShoppingCart {
         }
     }
 
-    private Discount getDiscountForFiveForAmount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt, int x, int numberOfXs) {
+    private Discount getDiscountForFiveForAmount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt, int numberOfXs) {
         Discount discount;
         double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
-        discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
+        discount = new Discount(p, 5 + " for " + offer.argument, -discountTotal);
         return discount;
     }
 
