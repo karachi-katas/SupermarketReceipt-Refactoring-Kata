@@ -11,7 +11,7 @@ public class TwoForAmount extends Offer {
         super(SpecialOfferType.TwoForAmount, product, argument);
     }
 
-    public Discount getDiscount(Product product, double quantity, double unitPrice) {
+    public Discount getDiscount(double quantity, double unitPrice) {
         int quantityAsInt = (int) quantity;
         if (quantityAsInt >= 2) {
             int x = 2;

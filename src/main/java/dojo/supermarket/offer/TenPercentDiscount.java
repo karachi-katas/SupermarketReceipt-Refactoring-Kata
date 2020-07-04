@@ -10,7 +10,7 @@ public class TenPercentDiscount extends Offer {
         super(SpecialOfferType.TenPercentDiscount, product, argument);
     }
 
-    public Discount getDiscount(Product p, double quantity, double unitPrice) {
-        return new Discount(p, argument + "% off", -quantity * unitPrice * argument / 100.0);
+    public Discount getDiscount(double quantity, double unitPrice) {
+        return new Discount(product, argument + "% off", -quantity * unitPrice * argument / 100.0);
     }
 }

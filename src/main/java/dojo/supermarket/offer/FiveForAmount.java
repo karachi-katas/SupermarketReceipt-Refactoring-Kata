@@ -11,7 +11,7 @@ public class FiveForAmount extends Offer {
         super(SpecialOfferType.FiveForAmount, product, argument);
     }
 
-    public Discount getDiscount(Product product, double quantity, double unitPrice) {
+    public Discount getDiscount(double quantity, double unitPrice) {
         int quantityAsInt = (int) quantity;
         if (quantityAsInt >= 5) {
             int x = 5;

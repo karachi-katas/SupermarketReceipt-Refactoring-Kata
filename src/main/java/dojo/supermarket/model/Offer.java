@@ -5,10 +5,12 @@ import dojo.supermarket.offer.TenPercentDiscount;
 import dojo.supermarket.offer.ThreeForTwo;
 import dojo.supermarket.offer.TwoForAmount;
 
-public class Offer {
+public abstract class Offer {
     SpecialOfferType offerType;
-    private final Product product;
+    protected final Product product;
     protected double argument;
+
+    public abstract Discount getDiscount(double quantity, double unitPrice);
 
     protected Offer(SpecialOfferType offerType, Product product, double argument) {
         this.offerType = offerType;
@@ -37,16 +39,7 @@ public class Offer {
                        double quantity) {
         Product product = getProduct();
         double unitPrice = catalog.getUnitPrice(product);
-        Discount discount = null;
-        if (offerType == SpecialOfferType.TenPercentDiscount) {
-            discount = new TenPercentDiscount(this.product, this.argument).getDiscount(product, quantity, unitPrice);
-        } else if (offerType == SpecialOfferType.ThreeForTwo) {
-            discount = new ThreeForTwo(this.product, this.argument).getDiscount(product, quantity, unitPrice);
-        } else if (offerType == SpecialOfferType.TwoForAmount) {
-            discount = new TwoForAmount(this.product, this.argument).getDiscount(product, quantity, unitPrice);
-        } else if (offerType == SpecialOfferType.FiveForAmount) {
-            discount = new FiveForAmount(this.product, this.argument).getDiscount(product, quantity, unitPrice);
-        }
+        Discount discount = getDiscount(quantity, unitPrice);
         if (discount != null)
             receipt.addDiscount(discount);
     }
