@@ -1,23 +1,25 @@
 package dojo.supermarket.strategy;
 
-import dojo.supermarket.model.Discount;
 import dojo.supermarket.model.SpecialOfferType;
 
 public class DiscountFactory {
-
+    private static SpecialOffer xForAmountSpecialOffer = new XForAmountSpecialOffer();
+    private static SpecialOffer xForYSpecialOffer = new XForYSpecialOffer();
+    private static SpecialOffer xForPercentageSpecialOffer = new XForPercentageSpecialOffer();
+    private static SpecialOffer defaultSpecialOffer = new DefaultSpecialOffer();
 
     public static SpecialOffer getSpecialOffer(SpecialOfferType offerType) {
         if (offerType == SpecialOfferType.TwoForAmount || offerType == SpecialOfferType.FiveForAmount) {
-            return new XForAmountSpecialOffer();
+            return xForAmountSpecialOffer;
         }
 
         if (offerType == SpecialOfferType.ThreeForTwo) {
-            return new XforYSpecialOffer();
+            return xForYSpecialOffer;
         }
 
         if (offerType == SpecialOfferType.TenPercentDiscount) {
-            return new XForPercentageSpecialOffer();
+            return xForPercentageSpecialOffer;
         }
-        return new DefaultSpecialOffer();
+        return defaultSpecialOffer;
     }
 }

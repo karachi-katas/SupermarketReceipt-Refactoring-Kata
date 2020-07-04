@@ -4,7 +4,7 @@ import dojo.supermarket.model.Discount;
 import dojo.supermarket.model.Offer;
 import dojo.supermarket.model.Product;
 
-public class XforYSpecialOffer extends SpecialOffer {
+public class XForYSpecialOffer extends SpecialOffer {
 
     @Override
     public Discount getDiscount(Product p, double quantity, Offer offer, double unitPrice) {
