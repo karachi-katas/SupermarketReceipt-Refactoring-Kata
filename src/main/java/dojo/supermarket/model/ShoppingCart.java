@@ -1,5 +1,8 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.model.abc.DiscountBuilderDecorator;
+import dojo.supermarket.model.abc.ThreeForTwoDecorator;
+
 import java.util.*;
 
 public class ShoppingCart {
@@ -51,7 +54,7 @@ public class ShoppingCart {
 
     private Discount getDiscountBasedOnOffer(Product p, double quantity, Offer offer, double unitPrice) {
         int quantityAsInt = (int) quantity;
-
+        DiscountBuilderDecorator discountBuilderDecorator = new ThreeForTwoDecorator().build()
         if (offer.offerType == SpecialOfferType.TwoForAmount && quantityAsInt >= 2)
             return getDiscountForTwoForAmountOffer(p, quantity, offer, unitPrice);
         else if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2)
