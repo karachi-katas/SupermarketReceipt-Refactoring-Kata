@@ -59,14 +59,20 @@ public class ShoppingCart {
                     discount = getDiscountTenPercentDiscount(p, quantity, offer, unitPrice);
                 }
                 if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-                    double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
-                    discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
+                    discount = getDiscountForFiveForAmount(p, quantity, offer, unitPrice, quantityAsInt, x, numberOfXs);
                 }
                 if (discount != null)
                     receipt.addDiscount(discount);
             }
 
         }
+    }
+
+    private Discount getDiscountForFiveForAmount(Product p, double quantity, Offer offer, double unitPrice, int quantityAsInt, int x, int numberOfXs) {
+        Discount discount;
+        double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
+        discount = new Discount(p, x + " for " + offer.argument, -discountTotal);
+        return discount;
     }
 
     private Discount getDiscountTenPercentDiscount(Product p, double quantity, Offer offer, double unitPrice) {
