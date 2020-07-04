@@ -15,4 +15,7 @@ public class Offer {
         return this.product;
     }
 
+    Discount getDiscount(Product p, double quantity, double unitPrice) {
+        return new Discount(p, argument + "% off", -quantity * unitPrice * argument / 100.0);
+    }
 }
