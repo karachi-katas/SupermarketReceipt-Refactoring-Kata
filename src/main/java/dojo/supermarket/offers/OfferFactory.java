@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OfferFactory {
-    private static List<ShoppingCartOffer> offerTypes=new ArrayList<ShoppingCartOffer>(){
+    private static List<DiscountOffer> offerTypes=new ArrayList<DiscountOffer>(){
         {
             add(new TwoForAmountOffer());
             add(new ThreeForTwo());
@@ -15,7 +15,7 @@ public class OfferFactory {
         }
     };
 
-    public static ShoppingCartOffer getDiscount(SpecialOfferType offerType, int quantityAsInt) {
+    public static DiscountOffer getDiscountOffer(SpecialOfferType offerType, int quantityAsInt) {
 
         return offerTypes.stream()
                 .filter(shoppingCartOffer->shoppingCartOffer.isApplicable(offerType,quantityAsInt))

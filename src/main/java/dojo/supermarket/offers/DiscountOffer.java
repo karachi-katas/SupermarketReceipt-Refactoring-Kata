@@ -5,7 +5,7 @@ import dojo.supermarket.model.Offer;
 import dojo.supermarket.model.Product;
 import dojo.supermarket.model.SpecialOfferType;
 
-public interface ShoppingCartOffer {
+public interface DiscountOffer {
 
     Discount getDiscount(Product p, double quantity, Offer offer, double unitPrice);
 

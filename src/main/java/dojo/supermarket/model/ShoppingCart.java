@@ -10,8 +10,7 @@ import java.util.Map;
 public class ShoppingCart {
 
     private final List<ProductQuantity> items = new ArrayList<>();
-    Map<Product, Double> productQuantities = new HashMap<>();
-
+    ProductQuantities productQuantities = new ProductQuantities();
 
     List<ProductQuantity> getItems() {
         return new ArrayList<>(items);
@@ -21,36 +20,28 @@ public class ShoppingCart {
         this.addItemQuantity(product, 1.0);
     }
 
-    Map<Product, Double> productQuantities() {
-        return productQuantities;
-    }
 
 
     public void addItemQuantity(Product product, double quantity) {
         items.add(new ProductQuantity(product, quantity));
-        if (productQuantities.containsKey(product)) {
-            productQuantities.put(product, productQuantities.get(product) + quantity);
-        } else {
-            productQuantities.put(product, quantity);
-        }
+        productQuantities.addItemQuantity(product, quantity);
     }
 
     void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
-        for (Product p : productQuantities().keySet()) {
-            double quantity = productQuantities.get(p);
-            if (offers.containsKey(p)) {
-                Offer offer = offers.get(p);
-                double unitPrice = catalog.getUnitPrice(p);
-                int quantityAsInt = (int) quantity;
-                Discount discount = null;
+        for (Product p : productQuantities.getProducts()) {
+            double quantity = productQuantities.getQuantity(p);
 
-                ShoppingCartOffer shoppingCartOffer =  OfferFactory.getDiscount(offer.offerType,quantityAsInt);
-                discount = shoppingCartOffer.getDiscount(p, quantity, offer, unitPrice);
-
-                if (discount != null) {
-                    receipt.addDiscount(discount);
-                }
+            if (!offers.containsKey(p)) {
+                continue;
             }
+
+            Offer offer = offers.get(p);
+            double unitPrice = catalog.getUnitPrice(p);
+            int quantityAsInt = (int) quantity;
+
+            DiscountOffer discountOffer = OfferFactory.getDiscountOffer(offer.offerType, quantityAsInt);
+            Discount discount = discountOffer.getDiscount(p, quantity, offer, unitPrice);
+            receipt.addDiscount(discount);
 
         }
     }

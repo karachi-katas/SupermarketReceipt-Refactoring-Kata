@@ -5,7 +5,7 @@ import dojo.supermarket.model.Offer;
 import dojo.supermarket.model.Product;
 import dojo.supermarket.model.SpecialOfferType;
 
-public class PercentDiscount implements ShoppingCartOffer {
+public class PercentDiscount implements DiscountOffer {
     @Override
     public Discount getDiscount(Product p, double quantity, Offer offer, double unitPrice) {
         Discount discount;

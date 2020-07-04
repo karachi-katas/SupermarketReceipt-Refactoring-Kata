@@ -5,7 +5,7 @@ import dojo.supermarket.model.Offer;
 import dojo.supermarket.model.Product;
 import dojo.supermarket.model.SpecialOfferType;
 
-public class TwoForAmountOffer implements ShoppingCartOffer {
+public class TwoForAmountOffer implements DiscountOffer {
 
 
     @Override
