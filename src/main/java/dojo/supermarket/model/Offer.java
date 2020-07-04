@@ -6,14 +6,12 @@ import dojo.supermarket.offer.ThreeForTwo;
 import dojo.supermarket.offer.TwoForAmount;
 
 public abstract class Offer {
-    SpecialOfferType offerType;
     protected final Product product;
     protected double argument;
 
     public abstract Discount getDiscount(double quantity, double unitPrice);
 
-    protected Offer(SpecialOfferType offerType, Product product, double argument) {
-        this.offerType = offerType;
+    protected Offer(Product product, double argument) {
         this.argument = argument;
         this.product = product;
     }
@@ -31,13 +29,8 @@ public abstract class Offer {
         throw new UnsupportedOperationException();
     }
 
-    Product getProduct() {
-        return this.product;
-    }
-
     void applyDiscount(Receipt receipt, SupermarketCatalog catalog,
                        double quantity) {
-        Product product = getProduct();
         double unitPrice = catalog.getUnitPrice(product);
         Discount discount = getDiscount(quantity, unitPrice);
         if (discount != null)

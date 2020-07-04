@@ -3,12 +3,11 @@ package dojo.supermarket.offer;
 import dojo.supermarket.model.Discount;
 import dojo.supermarket.model.Offer;
 import dojo.supermarket.model.Product;
-import dojo.supermarket.model.SpecialOfferType;
 
 public class FiveForAmount extends Offer {
 
     public FiveForAmount(Product product, double argument) {
-        super(SpecialOfferType.FiveForAmount, product, argument);
+        super(product, argument);
     }
 
     public Discount getDiscount(double quantity, double unitPrice) {
