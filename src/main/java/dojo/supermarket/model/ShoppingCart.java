@@ -1,5 +1,8 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.strategy.DiscountFactory;
+import dojo.supermarket.strategy.SpecialOffer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,47 +44,12 @@ public class ShoppingCart {
                 Offer offer = offers.get(p);
                 double unitPrice = catalog.getUnitPrice(p);
 
-                Discount discount = null;
-                if (offer.offerType == SpecialOfferType.TwoForAmount || offer.offerType == SpecialOfferType.FiveForAmount) {
-                    discount = getDiscountForXForAmount(p, quantity, offer, unitPrice);
-                }
-
-                if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-                    discount = getDiscountForXForY(p, quantity, offer, unitPrice);
-                }
-
-                if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
-                    discount = getDiscountForPercentage(p, quantity, offer, unitPrice);
-                }
+                SpecialOffer specialOffer = DiscountFactory.getSpecialOffer(offer.offerType);
+                Discount discount = specialOffer.getDiscount(p, quantity, offer, unitPrice);
 
                 if (discount != null)
                     receipt.addDiscount(discount);
             }
         }
     }
-
-    private Discount getDiscountForPercentage(Product p, double quantity, Offer offer, double unitPrice) {
-        return new Discount(p, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
-    }
-
-    private Discount getDiscountForXForY(Product p, double quantity, Offer offer, double unitPrice) {
-        int quantityAsInt = (int) quantity;
-        int offerSourceQuantity = offer.getOfferSourceQuantity();
-        int offerTargetQuantity = offer.getOfferTargetQuantity();
-        if (quantityAsInt < offerSourceQuantity) return null;
-
-        double discount = quantity * unitPrice - (((quantityAsInt / offerSourceQuantity) * offerTargetQuantity * unitPrice) + quantityAsInt % offerSourceQuantity * unitPrice);
-        return new Discount(p, offerSourceQuantity + " for " + offerTargetQuantity, -discount);
-    }
-
-    private Discount getDiscountForXForAmount(Product p, double quantity, Offer offer, double unitPrice) {
-        int quantityAsInt = (int) quantity;
-        int offerSourceQuantity = offer.getOfferSourceQuantity();
-        if (quantityAsInt < offerSourceQuantity) return null;
-        
-        double discount = (unitPrice * quantity) - (offer.argument * (quantityAsInt / offerSourceQuantity) + quantityAsInt % offerSourceQuantity * unitPrice);
-        return new Discount(p, offerSourceQuantity + " for " + offer.argument, -discount);
-    }
-
-
 }
