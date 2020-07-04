@@ -1,5 +1,7 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.offer.TenPercentDiscount;
+
 public class Offer {
     SpecialOfferType offerType;
     private final Product product;
@@ -15,10 +17,6 @@ public class Offer {
         return this.product;
     }
 
-    protected Discount getDiscount(Product p, double quantity, double unitPrice) {
-        return new Discount(p, argument + "% off", -quantity * unitPrice * argument / 100.0);
-    }
-
     void applyDiscount(Receipt receipt, SupermarketCatalog catalog,
                        double quantity) {
         Product product = getProduct();
@@ -26,7 +24,7 @@ public class Offer {
         int quantityAsInt = (int) quantity;
         Discount discount = null;
         if (offerType == SpecialOfferType.TenPercentDiscount) {
-            discount = getDiscount(product, quantity, unitPrice);
+            discount = new TenPercentDiscount(this.product, this.argument).getDiscount(product, quantity, unitPrice);
         }
         else {
             if (offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
